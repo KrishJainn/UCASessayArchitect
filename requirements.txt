@@ -1,0 +1,15 @@
+streamlit
+google-generativeai
+google-genai
+chromadb
+langchain-chroma
+langchain-huggingface
+langchain-community
+python-dotenv
+docx2txt
+python-docx
+watchdog
+fastapi
+uvicorn
+python-multipart
+pydantic

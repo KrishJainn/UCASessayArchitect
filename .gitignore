@@ -1,0 +1,12 @@
+# Python
+__pycache__/
+*.py[cod]
+venv/
+.env
+
+# MacOS
+.DS_Store
+
+# Frontend dependencies (handled by inner gitignore, but good to double check)
+frontend/node_modules/
+frontend/.next/
