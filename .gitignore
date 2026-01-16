@@ -10,3 +10,15 @@ venv/
 # Frontend dependencies (handled by inner gitignore, but good to double check)
 frontend/node_modules/
 frontend/.next/
+
+# Database (created at runtime)
+chroma_db/
+
+# Logs
+*.log
+backend.log
+frontend.log
+
+# Temp files
+temp_cvs/
+synthetic_essays/

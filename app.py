@@ -118,7 +118,7 @@ inject_premium_css()
 
 # --- Sidebar Navigation ---
 with st.sidebar:
-    st.image("https://placehold.co/200x60/1A3A6D/FFFFFF?text=InfoYoung+India", use_column_width=True) 
+    st.image("logo.png", width="stretch") 
     st.markdown("---")
     
     app_mode = st.radio("Navigation", ["🎓 UCAS Personal Statement", "⚙️ Admin: Train Brain"])
@@ -439,10 +439,10 @@ elif app_mode == "🎓 UCAS Personal Statement":
         if st.session_state.get("generated_essay") == "draft_generated" and st.session_state.get("generated_essay_json"):
             result_json = st.session_state.generated_essay_json
             
-            # Get sections
-            q1 = result_json.get('q1_motivation', '')
-            q2 = result_json.get('q2_academics', '')
-            q3 = result_json.get('q3_activities', '')
+            # Get sections (backend returns q1_answer, q2_answer, q3_answer)
+            q1 = result_json.get('q1_answer', '')
+            q2 = result_json.get('q2_answer', '')
+            q3 = result_json.get('q3_answer', '')
             
             # Calculate character counts
             q1_chars = len(q1)

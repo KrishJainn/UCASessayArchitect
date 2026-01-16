@@ -8,12 +8,19 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Load .env from the same directory as backend.py
 ENV_PATH = os.path.join(BASE_DIR, '.env')
 load_dotenv(dotenv_path=ENV_PATH)
-print(f"DEBUG: Loaded .env from {ENV_PATH}")
+
+# Support Streamlit Cloud secrets
+try:
+    import streamlit as st
+    if "GEMINI_API_KEY" in st.secrets:
+        os.environ["GEMINI_API_KEY"] = st.secrets["GEMINI_API_KEY"]
+except:
+    pass  # Not running in Streamlit or no secrets configured
+
 print(f"DEBUG: GEMINI_API_KEY is {'SET' if os.getenv('GEMINI_API_KEY') else 'NOT SET'}")
 
 from google import genai
 from google.genai import types
-import google.generativeai as genai_legacy # For legacy support if needed (or remove if fully replacing)
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 from ingest_essays import load_pdfs, split_text, store_in_chroma
