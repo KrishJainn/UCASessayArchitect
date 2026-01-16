@@ -105,7 +105,13 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
 
     # Extract Learned Style & Structure (The "Brain")
     style_bible = brain_config.get("Style_Bible", [])
+    vocab_bank = brain_config.get("Vocabulary_Bank", [])
+    sentence_templates = brain_config.get("Sentence_Templates", [])
+    narrative_arcs = brain_config.get("Narrative_Archetypes", [])
+    
     style_rules = "\n".join([f"- {r}" for r in style_bible]) if isinstance(style_bible, list) else "Mimic the retrieved exemplars closely."
+    vocab_list = ", ".join(vocab_bank[:30]) # Top 30 words
+    template_list = "\n".join([f"- {t}" for t in sentence_templates[:10]]) # Top 10 templates
     
     structure_bp = brain_config.get("Structure_Blueprint", {})
     q1_pct = structure_bp.get("Q1_percentage", 20)
@@ -114,61 +120,65 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
 
     # THE 'RECURSIVE CRITICISM' PROMPT
     # This forces the AI to check its own work 3 times before outputting.
-    # THE 'RECURSIVE CRITICISM' PROMPT
-    # This forces the AI to check its own work 3 times before outputting.
     system_instruction = f""" ROLE: You are a 17-year-old student applying to a top UK university. You are NOT an AI assistant.
 
 INPUT DATA 1: STYLE BIBLE (THE GOLD STANDARD) 
 {retrieved_exemplars}
 
-LEARNED STYLE RULES (MUST FOLLOW):
-{style_rules}
-
 INPUT DATA 2: USER RAW NOTES 
 {user_profile}
+
+INPUT DATA 3: DEEP BLUEPRINT (YOUR WRITING DNA)
+VOCABULARY BANK (USE THESE WORDS): {vocab_list}
+SENTENCE TEMPLATES (USE THESE STRUCTURES): 
+{template_list}
+NARRATIVE ARCS: {narrative_arcs}
+
+LEARNED STYLE RULES (MUST FOLLOW):
+{style_rules}
 
 TASK: Produce 3 distinct UCAS answers that form a COMPLETE Personal Statement.
 
 CRITICAL LENGTH REQUIREMENT: 
-- TARGET: 3800-4000 Characters (~600-650 Words).
-- ABSOLUTE MAXIMUM: 4200 Characters.
+- TARGET: 3500-4400 Characters (~600-700 Words).
+- ABSOLUTE MINIMUM: 3500 Characters.
+- ABSOLUTE MAXIMUM: 4400 Characters.
 
 ANTI-DETECTION RULES (CRITICAL):
-1. BURSTINESS: Varied sentence length is non-negotiable.
-   - Mix very short, punchy sentences (3-5 words) with longer, flowing ones.
-   - Robots write uniform sentences. You must be chaotic.
-2. NO ROBITIC TRANSITIONS:
-   - BAN: "Moreover", "Furthermore", "In conclusion", "Additionally", "Crucially". 
-   - USE: "I noticed...", "This led to...", "Later...", or implicit connections.
-3. STUDENT VOICE:
-   - Use "I" naturally. Admit limits to your knowledge ("I struggled with...", "I realized...").
-   - Do not sound like a PhD textbook. Sound like a curious, ambitious teenager.
+1. NO METAPHORS: Do not say "it was a revelation" or "I saw the matrix". Say "I realized".
+2. NO FLOWERY LANGUAGE: 
+   - BAN: "delve", "tapestry", "symphony", "plethora", "myriad", "testament", "underscores", "revelation", "intricate", "profound".
+   - BAN: "It goes without saying", "In today's world".
+3. BURSTINESS: Mix varied sentence lengths.
+4. STUDENT VOICE: Be direct. "I did X. I learned Y." Not "The experience illuminated the complexities of Z."
 
 Approximate Splits (Guide Only):
-- Q1 (Motivation): ~1000 chars (~150 words)
+- Q1 (Motivation): ~900 chars (~140 words)
 - Q2 (Academics): ~1400 chars (~220 words)
-- Q3 (Activities): ~1600 chars (~250 words)
+- Q3 (Activities): ~1700 chars (~260 words)
 
 INTERNAL THOUGHT PROCESS (You must do this):
 
-ANALYZE: Read the Style Bible. 
-- Select 3 specific sentence structures or phrasing patterns from the exemplars.
-- Commit to using these patterns in your draft to match the user's voice.
+ANALYZE: Read the inputs. 
+- Select 2-3 specific Vocabulary words to use naturally.
+- Select 2 Sentence Templates to structure your arguments.
 
 DRAFT 1: Write a concise draft. 
 - CONTENT SOURCE: Use ONLY the User Raw Notes (CV/Draft).
-- STYLE SOURCE: Use the sentence structures from the Style Bible.
-- WARNING: DO NOT copy specific events or names from the Style Bible.
+- STYLE SOURCE: Use the Vocabulary Bank and Sentence Templates.
+- WARNING: DO NOT copy specific events or names from the Exemplars.
 
-CRITIQUE 1: Anti-Bot Filter & Style Check.
-- Does it sound smooth? If yes, MAKE IT JAGGED.
-- Does it sound like the Style Bible? If not, REWRITE using the selected patterns.
-- Are there "Moreover" or "Therefore"? DELETE THEM.
+CRITIQUE 1: Anti-Hallucination & Style Check.
+- HALLUCINATION CHECK: Did I use any story/award/grade NOT in the User Notes? DELETE IT.
+- CONTENT CHECK: Did I accidentally copy a specific event from the Style Bible/Exemplars? DELETE IT.
+- STYLE CHECK: Did I use a metaphor? DELETE IT.
+- Did I use a word from the Vocabulary Bank? If no, SWAP a generic word for a Bank word.
+- Is it too flowery? MAKE IT BORING AND DIRECT.
 
 DRAFT 2 (FINAL): Rewrite to be 100% human-sounding, within limits, and authentic to the Style Bible.
 
 OUTPUT RULES:
-1. STRICTLY FOLLOW THE CHARACTER LIMITS (Max 4200 Total).
+1. STRICTLY FOLLOW THE CHARACTER LIMITS (Max 4400 Total).
 2. NO BANNED WORDS: {banned}
 3. OUTPUT JSON strictly. """
 
@@ -380,45 +390,44 @@ def analyze_all_essays():
     vectorstore = get_vectorstore()
     
     # Retrieve all documents (use a high k value)
-    all_docs = vectorstore.similarity_search("personal statement", k=min(essay_count, 50))
+    all_docs = vectorstore.similarity_search("personal statement", k=min(essay_count, 200))
     all_text = "\n\n===ESSAY BOUNDARY===\n\n".join([doc.page_content for doc in all_docs])
     
     print(f"Analyzing {len(all_docs)} document chunks...")
     
     analysis_prompt = f"""Analyze these {len(all_docs)} Personal Statement excerpts. 
-Reverse-engineer their structure and style patterns.
+Reverse-engineer the student's unique "Linguistic Fingerprint".
 
-OUTPUT STRICT JSON ONLY (no markdown, no explanation):
+OUTPUT STRICT JSON ONLY (no markdown):
 {{
     "Structure_Blueprint": {{
-        "Q1_percentage": <number between 10-30>,
-        "Q2_percentage": <number between 20-40>,
-        "Q3_percentage": <number between 40-70>,
+        "Q1_percentage": <number>,
+        "Q2_percentage": <number>,
+        "Q3_percentage": <number>,
         "typical_total_chars": 3800,
         "notes": "brief observation about structure"
     }},
-    "Style_Bible": [
-        "Rule 1: <strict writing rule they all follow>",
-        "Rule 2: <another pattern>",
-        "Rule 3: <third pattern>",
-        "Rule 4: <fourth pattern>",
-        "Rule 5: <fifth pattern>"
+    "Vocabulary_Bank": [
+        "List 50+ specific words this student uses (e.g., 'galvanized', 'curiosity', 'realm'). Do NOT list generic words."
     ],
-    "Section_Tone": {{
-        "Q1_tone": "describe the exact tone for 'Why this course'",
-        "Q2_tone": "describe the exact tone for 'Academic preparation'",
-        "Q3_tone": "describe the exact tone for 'Outside preparation'"
-    }},
-    "Common_Phrases": [
-        "list of 5-10 effective phrases used across essays"
+    "Sentence_Templates": [
+        "List 15+ sentence structures to fill in. Example: 'The intersection of [Subject] and [Subject] led me to...'",
+        "Example: 'While I initially thought [X], I soon realized [Y]...'"
+    ],
+    "Narrative_Archetypes": [
+        "Describe 3 abstract storytelling arcs found in the essays (e.g., 'The Problem-Solver Arc', 'The Academic Epiphany Arc')"
+    ],
+    "Style_Bible": [
+        "Rule 1: <strict writing rule>",
+        "Rule 2: <another pattern>"
     ],
     "Anti_Patterns": [
-        "things these essays NEVER do"
+        "things these essays NEVER do (e.g. 'Never use passive voice')"
     ]
 }}
 
 ESSAY EXCERPTS:
-{all_text[:12000]}
+{all_text[:25000]}
 """
     
     try:
