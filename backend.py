@@ -96,6 +96,10 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
         banned = anti_patterns
     elif isinstance(anti_patterns, dict):
         banned = anti_patterns.get("Banned_Words", [])
+    
+    # CRITICAL: Always append the Global Hardcoded Banned Words (Safety Net)
+    # This addresses user request to "pinpoint reduces" AI generated stuff.
+    banned = list(set(banned + BANNED_WORDS))
 
     # THE 'BLUEPRINT 2.0' STEP-BY-STEP PROMPT
     system_instruction = f""" ROLE: You are the 'Antigravity' Essay Architect.
