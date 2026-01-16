@@ -153,9 +153,10 @@ ANTI-DETECTION RULES (CRITICAL):
 4. STUDENT VOICE: Be direct. "I did X. I learned Y." Not "The experience illuminated the complexities of Z."
 
 Approximate Splits (Guide Only):
-- Q1 (Motivation): ~900 chars (~140 words)
-- Q2 (Academics): ~1400 chars (~220 words)
-- Q3 (Activities): ~1700 chars (~260 words)
+- Q1 (Motivation): ~1000 chars (~160 words)
+- Q2 (Academics): ~1500 chars (~240 words)
+- Q3 (Activities): ~1900 chars (~300 words)
+- DO NOT WRITE SHORT. AIM FOR THE UPPER LIMIT (4400).
 
 INTERNAL THOUGHT PROCESS (You must do this):
 
