@@ -22,7 +22,28 @@ if "generated_essay" not in st.session_state: st.session_state.generated_essay =
 if "cv_text" not in st.session_state: st.session_state.cv_text = ""
 
 # VERSION TRACER (To help user see if Cloud Updated)
-st.sidebar.info("🚀 **v4.1: Deep Brain & Anti-Lag** \n(If you see this, you have the latest code)")
+st.sidebar.info("🚀 **v5.0: Auto-Load Essays** \n(If you see this, you have the latest code)")
+
+# AUTO-LOAD ESSAYS ON STARTUP (if database is empty but PDFs exist)
+@st.cache_resource
+def auto_load_essays():
+    """Auto-ingest PDFs from the pdfs folder if database is empty."""
+    essay_count = backend.get_essay_count()
+    if essay_count == 0:
+        pdfs_folder = os.path.join(os.path.dirname(__file__), "pdfs")
+        if os.path.exists(pdfs_folder):
+            pdf_files = [f for f in os.listdir(pdfs_folder) if f.endswith('.pdf')]
+            if pdf_files:
+                print(f"AUTO-LOADING {len(pdf_files)} essays from pdfs folder...")
+                for pdf_file in pdf_files:
+                    pdf_path = os.path.join(pdfs_folder, pdf_file)
+                    backend.ingest_essay(pdf_path)
+                print("AUTO-LOAD COMPLETE")
+                return len(pdf_files)
+    return essay_count
+
+# Run auto-load on startup
+auto_load_essays()
 
 # --- Helper Functions for Navigation & Persistence ---
 def next_step():
