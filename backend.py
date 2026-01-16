@@ -114,6 +114,7 @@ INPUT 2: USER RAW NOTES (Ingredients)
 INPUT 3: DEEP BLUEPRINT (The DNA)
 Vocabulary: {brain_config.get('Vocabulary_Bank', [])[:15]}
 Templates: {brain_config.get('Sentence_Templates', [])[:5]}
+Structure: {brain_config.get('Structure_Blueprint', 'Analyze the Exemplars to match their flow')}
 
 STRICT RULES FOR HUMANIZATION (STRUCTURAL MIRRORING):
 1. **NO META-COMMENTARY:** Never explain what you learned. (e.g. DELETE "This experience taught me...", "This role highlighted...", "My goal is..."). Just tell the story.
@@ -128,11 +129,9 @@ GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
 "For my EPQ, I analyzed the 2008 crash. The models failed because they assumed house prices always rise. That mistake cost trillions." (Score: 0% AI).
 
 TASK:
-Write the Personal Statement in 3 sections with STRICT SECTION LIMITS:
-- **Q1 (Motivation):** MAX 950 Characters. (Be punchy).
-- **Q2 (Academics):** MAX 1450 Characters. (Focus on 2 core topics).
-- **Q3 (Activities):** MAX 1700 Characters. (Link to skills).
-- **TOTAL LIMIT: 4200 Characters.** (If you go over, cut content).
+Write the Personal Statement in 3 sections.
+- **STRUCTURE:** Follow the length ratios found in the 'Structure' or 'Style Bible' inputs.
+- **TOTAL LENGTH: 3600-4200 Characters.** (STRICT AGGREGATE LIMIT).
 - TONE: Sharp, Intellectual, Direct.
 - BANNED: {banned} + [deeply, profoundly, framework, landscape, tapestry, utilize, leverage, underscored, solidified, immersion, multifaceted]
 
