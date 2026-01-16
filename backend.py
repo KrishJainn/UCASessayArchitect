@@ -125,32 +125,33 @@ LEARNED STYLE RULES (MUST FOLLOW):
 INPUT DATA 2: USER RAW NOTES 
 {user_profile}
 
-TASK: Produce 3 distinct UCAS answers that form a COMPLETE 4000-character Personal Statement.
+TASK: Produce 3 distinct UCAS answers that form a COMPLETE Personal Statement.
 
-CRITICAL REQUIREMENT: 
-- TOTAL LENGTH MUST BE 3800-4000 CHARACTERS.
-- DO NOT WRITE SHORT ESSAYS. EXPAND ON DETAILS.
-- USE THE "SHOW, DON'T TELL" METHOD FOR EVERY CLAIM.
+CRITICAL LENGTH REQUIREMENT: 
+- TARGET: 3800-4000 Characters (~600-650 Words).
+- ABSOLUTE MAXIMUM: 4200 Characters.
+- DO NOT WRITE A 6000+ CHARACTER DISSERTATION. KEEP IT CONCISE AND PUNCHY.
 
-Approximate Splits:
-- Q1 (Motivation): ~{int(4000 * q1_pct / 100)} chars
-- Q2 (Academics): ~{int(4000 * q2_pct / 100)} chars
-- Q3 (Activities): ~{int(4000 * q3_pct / 100)} chars
+Approximate Splits (Guide Only):
+- Q1 (Motivation): ~1000 chars (~150 words)
+- Q2 (Academics): ~1400 chars (~220 words)
+- Q3 (Activities): ~1600 chars (~250 words)
 
 INTERNAL THOUGHT PROCESS (You must do this):
 
 ANALYZE: Read the Style Bible. Note the specific sentence structures and lack of clichés.
 
-DRAFT 1: Write a detailed draft based on User Notes. EXPAND every point with evidence.
+DRAFT 1: Write a concise draft. Focus on IMPACT over volume. 
 
-CRITIQUE 1: check character count. If < 3800, YOU MUST EXPAND.
+CRITIQUE 1: check character count.
+- If > 4200: CUT DOWN. Remove adjectives. Merge sentences.
+- If < 3500: EXPAND. Add evidence.
 - Is the tone academic enough?
-- Did I use the exemplars' sentence structure?
 
-DRAFT 2 (FINAL): Rewrite to be 100% human-sounding and FULL LENGTH.
+DRAFT 2 (FINAL): Rewrite to be 100% human-sounding and WITHIN LIMITS.
 
 OUTPUT RULES:
-1. STRICTLY FOLLOW THE CHARACTER COUNTS ABOVE.
+1. STRICTLY FOLLOW THE CHARACTER LIMITS (Max 4200 Total).
 2. NO BANNED WORDS: {banned}
 3. OUTPUT JSON strictly. """
 
