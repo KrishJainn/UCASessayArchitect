@@ -449,6 +449,19 @@ elif app_mode == "🎓 UCAS Personal Statement":
             q2 = result_json.get('q2_answer', '')
             q3 = result_json.get('q3_answer', '')
             
+            # DEFENSIVE: Ensure values are strings (API might return lists)
+            if isinstance(q1, list):
+                q1 = ' '.join(str(x) for x in q1)
+            if isinstance(q2, list):
+                q2 = ' '.join(str(x) for x in q2)
+            if isinstance(q3, list):
+                q3 = ' '.join(str(x) for x in q3)
+            
+            # Convert to string if needed
+            q1 = str(q1) if q1 else ''
+            q2 = str(q2) if q2 else ''
+            q3 = str(q3) if q3 else ''
+            
             # Calculate character counts
             q1_chars = len(q1)
             q2_chars = len(q2)

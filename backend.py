@@ -125,7 +125,7 @@ OUTPUT JSON strictly. """
                 system_instruction=system_instruction,
                 thinking_config=types.ThinkingConfig(
                     include_thoughts=False,
-                    thinking_budget=24576  # ABSOLUTE HARDWARE LIMIT (~90s Planning)
+                    thinking_budget=8192  # Reduced for Streamlit Cloud (prevents timeout)
                 ),
                 response_mime_type="application/json",
                 response_schema={
