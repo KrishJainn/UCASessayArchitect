@@ -195,9 +195,18 @@ Q3 SPECIFIC RULES (This section keeps getting flagged as AI):
 - NEVER say "problem-solving capabilities" - say "I got better at fixing things"
 - NEVER say "my ability to navigate"
 - NEVER say "have instilled in me"
-- Q3 ENDING FLOW: The very last sentence of Q3 MUST be a grounded, reflective thought about your future. It should NOT be a corporate summary. 
-- Example BAD: "These experiences have prepared me for the rigors of an Economics degree."
-- Example GOOD: "I want to apply this same data-driven rigor to actual market anomalies I see today."
+- Q3 ENDING FLOW (STRICT): The last sentence MUST be a "Forward Projection".
+- You MUST choose one of these 3 specific ending styles:
+  1. The Professional: "I am confident this course will equip me for [Specific Career Goal]."
+  2. The Philosopher: "Studying [Subject] allows me to [Big Picture Impact]."
+  3. The Student: "I am eager to contribute to [Aspect of Uni Life] and succeed in..."
+
+- BANNED ENDINGS (NEVER DO THIS):
+  - Do NOT summarize ("In conclusion, my skills make me...")
+  - Do NOT look back ("These experiences have prepared me...")
+  - Do NOT use "Therefore", "Thus", or "Ultimately".
+
+- Example GOOD Q3 Ending: "I am eager to apply this same resilience to the challenges of a Law degree."
 
 - Keep it SHORT and PUNCHY. Real students don't write corporate-speak.
 - Example BAD: "This experience gave me a clear understanding of financial responsibility"
