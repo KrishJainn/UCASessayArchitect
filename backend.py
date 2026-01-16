@@ -129,11 +129,11 @@ GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
 "For my EPQ, I analyzed the 2008 crash. The models failed because they assumed house prices always rise. That mistake cost trillions." (Score: 0% AI).
 
 TASK:
-Write the Personal Statement in 3 sections with STRICT SECTION LIMITS:
-- **Q1 (Motivation):** MAX 950 Characters. (Be punchy).
-- **Q2 (Academics):** MAX 1450 Characters. (Focus on 2 core topics).
-- **Q3 (Activities):** MAX 1700 Characters. (Link to skills).
-- **TOTAL LIMIT: 4200 Characters.**
+Write the Personal Statement in 3 sections with STRICT TARGET RANGES (DO NOT WRITE SHORT):
+- **Q1 (Motivation):** Target 900 - 1100 Characters.
+- **Q2 (Academics):** Target 1300 - 1500 Characters.
+- **Q3 (Activities):** Target 1500 - 1700 Characters.
+- **TOTAL LIMIT:** Must fall between 3700 and 4200 Characters.
 - TONE: Sharp, Intellectual, Direct.
 - BANNED: {banned} + [drawn to, allure, fascinated, deeply, profoundly, framework, landscape, tapestry, utilize, leverage, underscored, solidified, immersion, multifaceted]
 
