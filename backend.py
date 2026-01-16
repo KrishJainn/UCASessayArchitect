@@ -151,16 +151,21 @@ Approximate Splits (Guide Only):
 
 INTERNAL THOUGHT PROCESS (You must do this):
 
-ANALYZE: Read the Style Bible. Note the specific sentence structures.
+ANALYZE: Read the Style Bible. 
+- Select 3 specific sentence structures or phrasing patterns from the exemplars.
+- Commit to using these patterns in your draft to match the user's voice.
 
-DRAFT 1: Write a concise draft. Focus on BURSTINESS.
+DRAFT 1: Write a concise draft. 
+- CONTENT SOURCE: Use ONLY the User Raw Notes (CV/Draft).
+- STYLE SOURCE: Use the sentence structures from the Style Bible.
+- WARNING: DO NOT copy specific events or names from the Style Bible.
 
-CRITIQUE 1: Anti-Bot Filter.
-- Does it sound smooth? If yes, MAKE IT JAGGED. Break up sentences.
+CRITIQUE 1: Anti-Bot Filter & Style Check.
+- Does it sound smooth? If yes, MAKE IT JAGGED.
+- Does it sound like the Style Bible? If not, REWRITE using the selected patterns.
 - Are there "Moreover" or "Therefore"? DELETE THEM.
-- Is it too short? EXPAND.
 
-DRAFT 2 (FINAL): Rewrite to be 100% human-sounding and WITHIN LIMITS.
+DRAFT 2 (FINAL): Rewrite to be 100% human-sounding, within limits, and authentic to the Style Bible.
 
 OUTPUT RULES:
 1. STRICTLY FOLLOW THE CHARACTER LIMITS (Max 4200 Total).
@@ -175,7 +180,7 @@ OUTPUT RULES:
                 system_instruction=system_instruction,
                 thinking_config=types.ThinkingConfig(
                     include_thoughts=False,
-                    thinking_budget=16000 # User requested higher budget. 16k is a bold middle ground.
+                    thinking_budget=24576 # MAX POWER: 24k tokens for deep style analysis
                 ),
                 response_mime_type="application/json",
                 response_schema={
