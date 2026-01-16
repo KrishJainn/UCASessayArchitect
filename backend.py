@@ -116,23 +116,22 @@ Vocabulary: {brain_config.get('Vocabulary_Bank', [])[:15]}
 Templates: {brain_config.get('Sentence_Templates', [])[:5]}
 
 STRICT RULES FOR HUMANIZATION (STRUCTURAL MIRRORING):
-1. **NO DEFINITIONS:** DO NOT Start with "Economics is..." or "Finance provides...". This is instant 100% AI.
-2. **NO ADVERBS/ADJECTIVES:** Delete "deeply", "profoundly", "undoubtedly", "truly", "merely", "various", "numerous", "plethora".
-3. **SHOW, DON'T TELL:** Never say "I am passionate". Say "I spent 3 weeks debugging code".
-4. **ORWELL'S RULE:** Never use a long word where a short one will do. (e.g. Use "use" instead of "utilize").
-5. **MIRROR SYNTAX:** If the Exemplar uses a fragment ("Strange. But true."), YOU use a fragment.
+1. **NO META-COMMENTARY:** Never explain what you learned. (e.g. DELETE "This experience taught me...", "This role highlighted...", "My goal is..."). Just tell the story.
+2. **NO "MY [NOUN]" OPENERS:** Do not start sentences with "My passion", "My interest", "My EPQ", "My responsibilities". *Start with I*. ("I analyzed...", "I led...", "I read...").
+3. **NO LISTS OF 3:** Do not Say "X, Y, and Z". Say "X and Y". Lists of 3 are high-perplexity AI markers.
+4. **KILL THE ADJECTIVE:** Delete "rigorous", "invaluable", "pivotal", "complex".
 
 BAD ROBOTIC EXAMPLE (DO NOT WRITE LIKE THIS):
-"Economics and Finance provides the most rigorous analytical framework... I am deeply drawn to..." (Score: 100% AI).
+"My EPQ served as a practical immersion... This project taught me the importance of..." (Score: 100% AI).
 
 GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
-"I lost £50 trading generic stocks. That loss taught me more about markets than any textbook. I wanted to know *why* the price crashed." (Score: 0% AI).
+"For my EPQ, I analyzed the 2008 crash. The models failed because they assumed house prices always rise. That mistake cost trillions." (Score: 0% AI).
 
 TASK:
 Write the Personal Statement in 3 sections (Motivation, Academics, Activities).
-- **LENGTH: 3600-4200 Characters.** (Target this range).
+- **LENGTH: 3600-4200 Characters.**
 - TONE: Sharp, Intellectual, Direct.
-- BANNED: {banned} + [deeply, profoundly, framework, landscape, tapestry, utilize, leverage]
+- BANNED: {banned} + [deeply, profoundly, framework, landscape, tapestry, utilize, leverage, underscored, solidified, immersion, multifaceted]
 
 OUTPUT FORMAT:
 - JSON with keys: q1_answer, q2_answer, q3_answer.
