@@ -453,12 +453,12 @@ elif app_mode == "🎓 UCAS Personal Statement":
             q2 = result_json.get('q2_answer', '')
             q3 = result_json.get('q3_answer', '')
             
-            # DEFENSIVE: Ensure values are strings (API might return lists)
-            if isinstance(q1, list):
+            # DEFENSIVE: Ensure values are strings (API might return lists/tuples)
+            if isinstance(q1, (list, tuple)):
                 q1 = ' '.join(str(x) for x in q1)
-            if isinstance(q2, list):
+            if isinstance(q2, (list, tuple)):
                 q2 = ' '.join(str(x) for x in q2)
-            if isinstance(q3, list):
+            if isinstance(q3, (list, tuple)):
                 q3 = ' '.join(str(x) for x in q3)
             
             # Convert to string if needed
