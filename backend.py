@@ -188,19 +188,17 @@ OUTPUT RULES:
             contents="Execute the Internal Thought Process and output the JSON.",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
-                thinking_config=types.ThinkingConfig(
-                    include_thoughts=False,
-                    thinking_budget=12000 # OPTIMIZED: 12k tokens (User Requested Speed Fix)
-                ),
+                # REMOVED thinking_config (Not supported on 2.5 Flash - Causes Hang)
                 response_mime_type="application/json",
                 response_schema={
                     "type": "OBJECT",
                     "properties": {
+                        "thoughts": {"type": "STRING", "description": "Internal drafting checks"},
                         "q1_answer": {"type": "STRING", "description": "Motivation (Draft 2)"},
                         "q2_answer": {"type": "STRING", "description": "Academics (Draft 2)"},
                         "q3_answer": {"type": "STRING", "description": "Activities (Draft 2)"}
                     },
-                    "required": ["q1_answer", "q2_answer", "q3_answer"]
+                    "required": ["thoughts", "q1_answer", "q2_answer", "q3_answer"]
                 },
                 temperature=1.0 
             )
