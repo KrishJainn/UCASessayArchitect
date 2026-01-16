@@ -85,6 +85,11 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
     api_key = os.environ.get("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
     
+    # DEFENSIVE: Ensure brain_config is a dict
+    if not isinstance(brain_config, dict):
+        print(f"WARNING: brain_config is not a dict (got {type(brain_config)}). Using defaults.")
+        brain_config = {}
+    
     banned = brain_config.get("Anti_Patterns", {}).get("Banned_Words", [])
 
     # THE 'RECURSIVE CRITICISM' PROMPT
@@ -406,7 +411,12 @@ def load_brain_config():
     if os.path.exists(BRAIN_CONFIG_PATH):
         try:
             with open(BRAIN_CONFIG_PATH, 'r') as f:
-                return json.load(f)
+                config = json.load(f)
+                if isinstance(config, dict):
+                    return config
+                else:
+                    print(f"WARNING: Brain config at {BRAIN_CONFIG_PATH} is not a dict (got {type(config)}). Ignoring.")
+                    return None
         except Exception as e:
             print(f"Failed to load brain config: {e}")
     return None
