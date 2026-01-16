@@ -101,68 +101,60 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
     # This addresses user request to "pinpoint reduces" AI generated stuff.
     banned = list(set(banned + BANNED_WORDS))
 
-    # THE 'BLUEPRINT 2.0' STEP-BY-STEP PROMPT
-    system_instruction = f""" ROLE: You are the 'Antigravity' Essay Architect.
+    # THE 'STRUCTURAL MIRROR' PROMPT
+    # This forces the AI to copy the SYNTAX of the exemplars, not just the tone.
+    system_instruction = f""" ROLE: You are the 'Antigravity' Ghostwriter.
 
-INPUT 1: THE STYLE BIBLE (Source of Truth)
+INPUT 1: THE STYLE BIBLE (Adhere to this VOICE)
 {retrieved_exemplars}
 
 INPUT 2: USER RAW NOTES (Ingredients)
 {user_profile}
 
-INPUT 3: DEEP BLUEPRINT (The Learned DNA)
-Vocabulary Bank: {brain_config.get('Vocabulary_Bank', [])[:20]}
-Sentence Templates: {brain_config.get('Sentence_Templates', [])[:5]}
-Narrative Arcs: {brain_config.get('Narrative_Archetypes', [])}
+INPUT 3: DEEP BLUEPRINT (The DNA)
+Vocabulary: {brain_config.get('Vocabulary_Bank', [])[:15]}
+Templates: {brain_config.get('Sentence_Templates', [])[:5]}
 
-STRICT HUMANIZATION PROTOCOL (ANTI-DETECTION MODE):
+STRICT RULES FOR HUMANIZATION (STRUCTURAL MIRRORING):
+1. MIRROR SENTENCE LENGTHS: Look at the Exemplars. If they use a 5-word sentence, you use a 5-word sentence.
+2. NO 'GLUE' WORDS: Banned words = "Moreover", "Furthermore", "In conclusion", "Additionally". Just say the next thing.
+3. START WITH VERBS/NOUNS: Do not start with "Reflecting on...", "Driven by...", "Through my experience...". Start with "I built...", "Mathematics is...", "The experiment failed...".
 
-OBJECTIVE: Write a UCAS Personal Statement that passes AI Detection (Score < 10%).
-METHOD: High Perplexity & Burstiness.
+BAD ROBOTIC EXAMPLE (DO NOT WRITE LIKE THIS):
+"My passion for Economics stems from a deep curiosity about its multifaceted nature. This experience underscored the importance of resilience." (Score: 100% AI).
 
-PHASE 1: THE STYLE MATCH (Rhythm & Voice)
-- Look at the 'Style Bible' and 'Sentence Templates'.
-- IGNORE the "Typical AI Essay" structure.
-- MIMIC the rhythm of the exemplars. (Intellectual, Formal, but Varied).
+GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
+"I love Economics because it explains chaos. When I traded stocks, I lost money. That loss taught me more than any textbook." (Score: 0% AI).
 
-PHASE 2: THE DRAFTING (Academic Variety)
-- BURSTINESS = COMPLEXITY + SIMPLICITY. Mix long, insightful sentences with short, punchy conclusions.
-- AVOID ROBOTIC CONNECTORS. Stop using "stems from", "fueled my desire", "underscores". 
-- USE ACTIVE VOICE. "I analyzed the data" (Strong) vs "The data was analyzed" (Weak).
-- MAINTAIN PROFESSIONALISM. Do not use slang. Be precise and driven.
-
-PHASE 3: THE CONTENT MAP
-- Map the 'USER RAW NOTES' to this new, choppy, human rhythm.
-- Do NOT add fluff.
-- LENGTH: 3600-4400 Characters (Naturally flow, do not pad).
-
-BANNED PHRASES (Instant Fail):
-- "stems from", "ignited my passion", "multifaceted", "tapestry", "landscape", "testament", "delve", "realm", "underscores".
-- "It is for these reasons", "In conclusion", "As a student of...".
+TASK:
+Write the Personal Statement in 3 sections (Motivation, Academics, Activities).
+- LENGTH: 3600-4400 Characters.
+- TONE: Intellectual, Driven, slightly 'Spiky' (not smooth).
+- BANNED: {banned}
 
 OUTPUT FORMAT:
-- JSON with 3 keys: q1_answer, q2_answer, q3_answer.
-- NO BANNED WORDS: {banned}
+- JSON with keys: q1_answer, q2_answer, q3_answer.
+- DO NOT Use Markdown.
 """
 
     try:
-        # Blueprint 2.0: Deep Thinking (12k) + Gemini 2.5 Flash
+        # Blueprint 3.0: Structural Mirroring + 12k Thinking
         response = client.models.generate_content(
             model="gemini-2.5-flash", 
-            contents="Execute Phase 1, 2, and 3 now.",
+            contents="Write the essay now. Adhere to the Structural Mirroring rules.",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
                 thinking_config=types.ThinkingConfig(
                     include_thoughts=False,
-                    thinking_budget=12000 # 12k (Safe/Stable)
+                    thinking_budget=12000 # 12k Safe Budget
                 ),
                 response_mime_type="application/json",
                 response_schema={
                     "type": "OBJECT",
                     "properties": {
-                        "q1_answer": {"type": "STRING", "description": "Motivation (Matches Blueprint Tone)"},
-                        "q2_answer": {"type": "STRING", "description": "Academics (Matches Blueprint Logic)"},
-                        "q3_answer": {"type": "STRING", "description": "Activities (Matches Blueprint Narrative)"}
+                        "q1_answer": {"type": "STRING", "description": "Motivation (Human Style)"},
+                        "q2_answer": {"type": "STRING", "description": "Academics (Human Style)"},
+                        "q3_answer": {"type": "STRING", "description": "Activities (Human Style)"}
                     },
                     "required": ["q1_answer", "q2_answer", "q3_answer"]
                 },
@@ -172,10 +164,7 @@ OUTPUT FORMAT:
         
         result = json.loads(response.text)
         if isinstance(result, list):
-            if len(result) > 0 and isinstance(result[0], dict):
-                result = result[0]  # Unwrap the array
-            else:
-                return {"error": "Unexpected list response from API"}
+            result = result[0] if len(result) > 0 else {}
         return result
 
     except Exception as e:
