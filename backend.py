@@ -117,9 +117,10 @@ Templates: {brain_config.get('Sentence_Templates', [])[:5]}
 
 STRICT RULES FOR HUMANIZATION (STRUCTURAL MIRRORING):
 1. **NO DEFINITIONS:** DO NOT Start with "Economics is..." or "Finance provides...". This is instant 100% AI.
-2. **NO ADVERBS:** Delete "deeply", "profoundly", "undoubtedly", "truly", "merely". (e.g. Instead of "I was deeply intrigued", say "I grew interested").
-3. **START WITH ACTION:** Start paragraphs with what you DID. "I built logic gates..." not "My interest in computing...".
-4. **MIRROR SYNTAX:** If the Exemplar uses a fragment ("Strange. But true."), YOU use a fragment.
+2. **NO ADVERBS/ADJECTIVES:** Delete "deeply", "profoundly", "undoubtedly", "truly", "merely", "various", "numerous", "plethora".
+3. **SHOW, DON'T TELL:** Never say "I am passionate". Say "I spent 3 weeks debugging code".
+4. **ORWELL'S RULE:** Never use a long word where a short one will do. (e.g. Use "use" instead of "utilize").
+5. **MIRROR SYNTAX:** If the Exemplar uses a fragment ("Strange. But true."), YOU use a fragment.
 
 BAD ROBOTIC EXAMPLE (DO NOT WRITE LIKE THIS):
 "Economics and Finance provides the most rigorous analytical framework... I am deeply drawn to..." (Score: 100% AI).
@@ -131,7 +132,7 @@ TASK:
 Write the Personal Statement in 3 sections (Motivation, Academics, Activities).
 - **LENGTH: 3600-4200 Characters.** (Target this range).
 - TONE: Sharp, Intellectual, Direct.
-- BANNED: {banned} + [deeply, profoundly, framework, landscape, tapestry]
+- BANNED: {banned} + [deeply, profoundly, framework, landscape, tapestry, utilize, leverage]
 
 OUTPUT FORMAT:
 - JSON with keys: q1_answer, q2_answer, q3_answer.
