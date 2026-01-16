@@ -400,29 +400,20 @@ def analyze_all_essays():
     print(f"Analyzing {len(all_docs_text)} document chunks...")
     
     analysis_prompt = f"""Analyze these {len(all_docs_text)} Personal Statement excerpts. 
-    OBJECTIVE: Extract the "Human Fingerprint" (Unique Sentence Structures) and EXACT STRUCTURE.
+    OBJECTIVE: Extract ONLY vocabulary, sentence templates, and tones. DO NOT analyze structure.
     
-    TASK 1: EXACT STRUCTURE ANALYSIS
-    - Look at the provided essays.
-    - ESTIMATE the character split between:
-      - Q1 (Introduction/Motivation/Hook)
-      - Q2 (Academic Paragraphs/Supercurriculars)
-      - Q3 (Extracurriculars/Conclusion)
-    - The numbers MUST add up to 100%.
-    - DO NOT default to 25/50/25. Look at the actual text density.
-    
-    TASK 2: SYNTAX HUNTER
+    TASK: SYNTAX HUNTER
     - Extract unique, jagged sentence structures.
     - Ignore cliches.
     
     OUTPUT STRICT JSON ONLY (no markdown):
     {{
         "Structure_Blueprint": {{
-            "Q1_percentage": <number>,
-            "Q2_percentage": <number>,
-            "Q3_percentage": <number>,
+            "Q1_percentage": 22,
+            "Q2_percentage": 33,
+            "Q3_percentage": 45,
             "typical_total_chars": 4000,
-            "notes": "Describe the observed structure (e.g. 'Heavy academic focus', or 'Long narrative intro')."
+            "notes": "Fixed structure as specified by user"
         }},
         "Vocabulary_Bank": [
             "List 50+ specific words (e.g., 'galvanized', 'curiosity', 'realm')."

@@ -1,0 +1,19 @@
+{
+  "Structure_Blueprint": {
+    "Q1_percentage": 22,
+    "Q2_percentage": 33,
+    "Q3_percentage": 45,
+    "typical_total_chars": 4000,
+    "notes": "Fixed structure: 22/33/45 as specified by user"
+  },
+  "Vocabulary_Bank": [],
+  "Section_Tone": {},
+  "Sentence_Templates": [],
+  "Style_Bible": [],
+  "Anti_Patterns": [],
+  "_metadata": {
+    "analyzed_chunks": 0,
+    "analysis_date": "Manual",
+    "model_used": "user-specified"
+  }
+}
