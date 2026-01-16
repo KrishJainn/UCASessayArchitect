@@ -146,6 +146,10 @@ CRITICAL: You MUST copy the EXACT writing style, sentence patterns, and tone fro
 {retrieved_exemplars}
 === END EXAMPLES ===
 
+=== LEARNED ENDING PATTERNS ===
+{brain_config.get('Ending_Patterns', [])}
+=== END PATTERNS ===
+
 YOUR TASK:
 Take the student's raw information and rewrite it in the EXACT SAME STYLE as the examples above.
 - Copy their sentence structures
@@ -525,6 +529,9 @@ def analyze_all_essays():
         "Anti_Patterns": [
             "Phrases or styles they NEVER use.",
             "Words they avoid."
+        ],
+        "Ending_Patterns": [
+            "Extract 5+ SPECIFIC ways the student concludes sections (e.g. 'Always ties back to future impact', 'Uses a punchy 5-word sentence')."
         ]
     }}
     
