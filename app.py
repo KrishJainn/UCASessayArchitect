@@ -464,14 +464,46 @@ elif app_mode == "🎓 UCAS Personal Statement":
                 delta = total_chars - 4000
                 st.metric("Total", f"{total_chars}/4000", delta=f"{delta:+d}" if delta != 0 else "✓ Exact", delta_color="inverse")
             
-            st.markdown("### 1️⃣ Q1: Motivation (The Spark)")
-            st.info(q1)
+            st.markdown("---")
             
-            st.markdown("### 2️⃣ Q2: Academics (Input -> Output)")
-            st.info(q2)
+            # Match the Next.js frontend styling
+            st.markdown("""
+            <style>
+            .ucas-question {
+                font-size: 0.75rem;
+                font-weight: 700;
+                color: #9CA3AF;
+                text-transform: uppercase;
+                letter-spacing: 0.1em;
+                margin-bottom: 0.75rem;
+            }
+            .ucas-answer {
+                font-family: Georgia, serif;
+                color: #1F2937;
+                line-height: 1.75;
+                padding: 1rem;
+                background-color: #F9FAFB;
+                border-radius: 0.5rem;
+                border: 1px solid #E5E7EB;
+            }
+            </style>
+            """, unsafe_allow_html=True)
             
-            st.markdown("### 3️⃣ Q3: Activities (The Scene Cards)")
-            st.success(q3)
+            # Q1
+            st.markdown('<p class="ucas-question">1️⃣ Why do you want to study this course or subject?</p>', unsafe_allow_html=True)
+            st.markdown(f'<div class="ucas-answer">{q1}</div>', unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Q2
+            st.markdown('<p class="ucas-question">2️⃣ How have your qualifications and studies prepared you for this course?</p>', unsafe_allow_html=True)
+            st.markdown(f'<div class="ucas-answer">{q2}</div>', unsafe_allow_html=True)
+            
+            st.markdown("<br>", unsafe_allow_html=True)
+            
+            # Q3
+            st.markdown('<p class="ucas-question">3️⃣ What else have you done to prepare for this course?</p>', unsafe_allow_html=True)
+            st.markdown(f'<div class="ucas-answer">{q3}</div>', unsafe_allow_html=True)
 
             # Combine for download
             full_essay = f"{q1}\n\n{q2}\n\n{q3}"

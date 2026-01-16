@@ -140,7 +140,16 @@ OUTPUT JSON strictly. """
                 temperature=1.0 # Max Creativity
             )
         )
-        return json.loads(response.text)
+        result = json.loads(response.text)
+        # Handle case where Gemini returns a list instead of dict
+        if isinstance(result, list):
+            if len(result) > 0 and isinstance(result[0], dict):
+                result = result[0]  # Unwrap the array
+            else:
+                return {"error": "Unexpected list response from API"}
+        return result
+    except json.JSONDecodeError as e:
+        return {"error": f"JSON Parse Error: {str(e)} - Raw: {response.text[:200]}"}
     except Exception as e:
         return {"error": str(e)}
 
