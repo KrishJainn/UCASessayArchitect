@@ -158,11 +158,13 @@ Take the student's raw information and rewrite it in the EXACT SAME STYLE as the
 STUDENT RAW INFORMATION:
 {user_profile}
 
-LENGTH REQUIREMENTS (STRICT - UCAS HARD LIMIT):
-- Q1: Around {q1_limit} characters
-- Q2: Around {q2_limit} characters
-- Q3: Around {q3_limit} characters
-- TOTAL: MAXIMUM 3900 characters (UCAS limit is 4000 - stay UNDER it!)
+LENGTH REQUIREMENTS (CRITICAL):
+- Q1: MINIMUM {q1_limit} characters - write MORE if needed
+- Q2: MINIMUM {q2_limit} characters - write MORE if needed  
+- Q3: MINIMUM {q3_limit} characters - write MORE if needed
+- TOTAL: TARGET 3700-3900 characters (you are currently writing too short - EXPAND!)
+
+The output is too short if under 3500 characters. ADD MORE CONTENT.
 
 BANNED WORDS (NEVER USE THESE - they flag as AI):
 {BANNED_WORDS}
