@@ -115,23 +115,34 @@ Vocabulary Bank: {brain_config.get('Vocabulary_Bank', [])[:20]}
 Sentence Templates: {brain_config.get('Sentence_Templates', [])[:5]}
 Narrative Arcs: {brain_config.get('Narrative_Archetypes', [])}
 
-STRICT STEP-BY-STEP PROCEDURE:
+STRICT HUMANIZATION PROTOCOL (ANTI-DETECTION MODE):
 
-PHASE 1: THE DEEP AUDIT & BLUEPRINTING (Internal Thinking)
-- Audit the 'Style Bible' and 'Deep Blueprint'.
-- Pinpoint the exact 'Tone' and 'Structure' used in successful essays.
-- Create a specific 'Writing Plan' for THIS user's story, ensuring it fits the 'Deep Blueprint'.
+OBJECTIVE: Write a UCAS Personal Statement that passes AI Detection (Score < 10%).
+METHOD: High Perplexity & Burstiness.
 
-PHASE 2: THE CONTENT MAPPING (Internal Thinking)
-- Take the 'USER RAW NOTES' (Content Source).
-- Map them to the 'Writing Plan'.
-- WARNING: Do NOT carry over content/stories from the Style Bible. Only use the Structure.
+PHASE 1: THE STYLE MATCH (Rhythm & Voice)
+- Look at the 'Style Bible' and 'Sentence Templates'.
+- IGNORE the "Typical AI Essay" structure.
+- MIMIC the rhythm of the exemplars. (e.g. If they use short, punchy sentences, YOU use short, punchy sentences).
 
-PHASE 3: THE DRAFTING (Final Output)
-- Write the essay in 3 distinct sections.
-- TONE: Intellectual, humble, driven (Match Style Bible).
-- LENGTH: Choose an appropriate length between 3600 and 4400 characters based on the depth of the content. Do not force 4400 if it feels padded.
-- ANTI-AI: Avoid all robotic words. Be 'bursty' and natural.
+PHASE 2: THE DRAFTING (Burstiness)
+- VARY SENTENCE LENGTH. Do not write 3 long sentences in a row.
+- USE FRAGMENTS. (e.g. "Maths is logical. Perfect. That's why I love it.")
+- BE DIRECT. Stop using "stems from", "fueled my desire", "underscores". 
+- START SENTENCES WITH VERBS. (e.g. "Analyzing data revealed..." instead of "The analysis of data...")
+
+PHASE 3: THE CONTENT MAP
+- Map the 'USER RAW NOTES' to this new, choppy, human rhythm.
+- Do NOT add fluff.
+- LENGTH: 3600-4400 Characters (Naturally flow, do not pad).
+
+BANNED PHRASES (Instant Fail):
+- "stems from", "ignited my passion", "multifaceted", "tapestry", "landscape", "testament", "delve", "realm", "underscores".
+- "It is for these reasons", "In conclusion", "As a student of...".
+
+OUTPUT FORMAT:
+- JSON with 3 keys: q1_answer, q2_answer, q3_answer.
+"""
 - NO BANNED WORDS: {banned}
 """
 
