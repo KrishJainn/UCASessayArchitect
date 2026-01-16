@@ -136,43 +136,46 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
     q2_limit = int(total_target * q2_pct)
     q3_limit = int(total_target * q3_pct)
 
-    # THE 'ACADEMIC HUMAN' PROMPT (Phoenix 9.0: POLISHED BUT REAL)
-    # Matches uploaded UCAS essay style while avoiding AI patterns
-    system_instruction = f"""You are an elite UCAS personal statement writer. Your output must match the EXACT style of successful Oxford/Cambridge applicants.
+    # THE 'STYLE CLONE' PROMPT (Phoenix 10.0: EXACT COPY)
+    # Forces AI to clone the EXACT style of uploaded essays
+    system_instruction = f"""You are rewriting a personal statement by CLONING the exact style of the example essays below.
 
-CRITICAL STYLE RULES:
-1. Write in POLISHED ACADEMIC ENGLISH - not casual speech
-2. NO slang, NO "like", NO "you know", NO "honestly"
-3. Use sophisticated vocabulary sparingly
-4. Sentences should be clear, direct, and professional
-5. Show intellectual engagement with the subject
+CRITICAL: You MUST copy the EXACT writing style, sentence patterns, and tone from these real essays:
 
-AI DETECTION BYPASS (maintain these subtly):
-- Vary sentence length naturally (some short, some longer)
-- Use occasional contractions (I've, it's, didn't) - but sparingly
-- Avoid robotic transitions (no "Furthermore", "Moreover", "In conclusion")
-- Include one or two moments of genuine voice/personality
-- Use dashes (–) for emphasis occasionally
-- No perfect parallel structures
-
-EXEMPLAR STYLE TO MATCH:
+=== EXAMPLE ESSAYS TO CLONE (COPY THIS STYLE EXACTLY) ===
 {retrieved_exemplars}
+=== END EXAMPLES ===
 
-STUDENT INFORMATION:
+YOUR TASK:
+Take the student's raw information and rewrite it in the EXACT SAME STYLE as the examples above.
+- Copy their sentence structures
+- Copy their paragraph flow
+- Copy their vocabulary choices
+- Copy their tone and voice
+- Copy how they introduce ideas
+- Copy how they transition between topics
+
+STUDENT RAW INFORMATION:
 {user_profile}
 
-LEARNED PATTERNS TO USE:
-Vocabulary: {vocab_bank[:15]}
-Sentence Templates: {sentence_templates[:5]}
+LENGTH REQUIREMENTS (CRITICAL - MUST FILL):
+- Q1: EXACTLY {q1_limit} characters (NOT LESS)
+- Q2: EXACTLY {q2_limit} characters (NOT LESS)
+- Q3: EXACTLY {q3_limit} characters (NOT LESS)
+- TOTAL: Between 3800-4000 characters
 
-STRUCTURE (STRICT):
-- Q1 ({q1_limit} chars): Opening hook - intellectual curiosity, a moment of insight
-- Q2 ({q2_limit} chars): Academic engagement - books, theories, your critical analysis
-- Q3 ({q3_limit} chars): Practical experience - projects, activities, what you learned
+If your output is too short, ADD MORE DETAIL. Expand on ideas. Include more examples.
+The essays above are full-length. Your output MUST be full-length too.
 
-TOTAL: Must be under 4000 characters.
+WHAT NOT TO DO:
+- Do NOT write like an AI (no "Furthermore", "Moreover", "In conclusion")
+- Do NOT use generic phrases ("passionate about", "inspired me to", "sparked my interest")
+- Do NOT summarize - expand and elaborate
+- Do NOT be brief - be thorough like the examples
 
-OUTPUT FORMAT: Return ONLY a JSON object with keys "q1_answer", "q2_answer", "q3_answer", "analysis_log".
+OUTPUT FORMAT:
+Return JSON with keys: "analysis_log", "q1_answer", "q2_answer", "q3_answer"
+Each answer must be a COMPLETE, FULL-LENGTH paragraph matching the character limits above.
 """
 
     try:
@@ -197,7 +200,7 @@ OUTPUT FORMAT: Return ONLY a JSON object with keys "q1_answer", "q2_answer", "q3
                     },
                     "required": ["analysis_log", "q1_answer", "q2_answer", "q3_answer"]
                 },
-                temperature=2.0 # Maximum chaos - this is what passed AI detection
+                temperature=1.0 # Controlled creativity - stay close to exemplar style
             )
         )
         
