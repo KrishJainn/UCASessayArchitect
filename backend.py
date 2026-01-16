@@ -129,13 +129,13 @@ GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
 "For my EPQ, I analyzed the 2008 crash. The models failed because they assumed house prices always rise. That mistake cost trillions." (Score: 0% AI).
 
 TASK:
-Write the Personal Statement in 3 sections with STRICT TARGET RANGES (DO NOT WRITE SHORT):
-- **Q1 (Motivation):** Target 900 - 1100 Characters.
-- **Q2 (Academics):** Target 1300 - 1500 Characters.
-- **Q3 (Activities):** Target 1500 - 1700 Characters.
-- **TOTAL LIMIT:** Must fall between 3700 and 4200 Characters.
+Write the Personal Statement in 3 sections with STRICT TARGET RANGES (DO NOT WRITE SHORT, DO NOT OVERSHOOT):
+- **Q1 (Motivation):** Target 800 - 950 Characters. (Be punchy).
+- **Q2 (Academics):** Target 1200 - 1400 Characters.
+- **Q3 (Activities):** Target 1400 - 1600 Characters.
+- **TOTAL LIMIT:** Must fall between 3600 and 4100 Characters.
 - TONE: Sharp, Intellectual, Direct.
-- BANNED: {banned} + [drawn to, allure, fascinated, deeply, profoundly, framework, landscape, tapestry, utilize, leverage, underscored, solidified, immersion, multifaceted]
+- BANNED: {banned} + [driven to, underpinning, instilled, akin to, demystify, power of, drawn to, allure, fascinated, deeply, profoundly, framework, landscape, tapestry, utilize, leverage]
 
 OUTPUT FORMAT:
 - JSON with keys: q1_answer, q2_answer, q3_answer.
