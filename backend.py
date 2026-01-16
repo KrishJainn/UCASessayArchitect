@@ -131,6 +131,11 @@ INPUT 3: DEEP BLUEPRINT (The DNA)
 Vocabulary: {vocab_bank[:20]}
 MANDATORY VOCAB TO USE: {forced_vocab} (You MUST use these 7 words naturally).
 
+YOUR PROCESS (STEP-BY-STEP):
+1. **ANALYZE:** Read the "Style Bible". Note the average sentence length. Note the lack of adjectives.
+2. **PLAN:** Select the 7 mandatory words. Decide where they fit.
+3. **DRAFT:** Write the 3 sections, strictly adhering to the "Action Opener" and "In Media Res" rules.
+
 STRICT RULES FOR HUMANIZATION (SYNTAX CLONING):
 1. **NO THESIS STATEMENTS:** 
    - NEVER Start with "I want to study Economics because...". (Score: 100% AI).
@@ -163,7 +168,11 @@ Write the Personal Statement in 3 sections with STRICT TARGET RANGES (DO NOT WRI
 - BANNED: {master_banned}
 
 OUTPUT FORMAT:
-- JSON with keys: q1_answer, q2_answer, q3_answer.
+- JSON with keys: 
+  - "analysis_log": "Brief 2-sentence summary of the Exemplar's style that you will mimic.",
+  - "q1_answer", 
+  - "q2_answer", 
+  - "q3_answer".
 - DO NOT Use Markdown.
 """
 
@@ -171,7 +180,7 @@ OUTPUT FORMAT:
         # Blueprint 3.0: Structural Mirroring + 12k Thinking
         response = client.models.generate_content(
             model="gemini-2.5-flash", 
-            contents="Write the essay now. Adhere to the Structural Mirroring rules.",
+            contents="Execute Step 1 (Analyze) and Step 2 (Draft) now.",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
                 thinking_config=types.ThinkingConfig(
@@ -182,11 +191,12 @@ OUTPUT FORMAT:
                 response_schema={
                     "type": "OBJECT",
                     "properties": {
+                        "analysis_log": {"type": "STRING", "description": "Step 1: Your analysis of the style to clone"},
                         "q1_answer": {"type": "STRING", "description": "Motivation (Human Style)"},
                         "q2_answer": {"type": "STRING", "description": "Academics (Human Style)"},
                         "q3_answer": {"type": "STRING", "description": "Activities (Human Style)"}
                     },
-                    "required": ["q1_answer", "q2_answer", "q3_answer"]
+                    "required": ["analysis_log", "q1_answer", "q2_answer", "q3_answer"]
                 },
                 temperature=1.0 
             )

@@ -442,6 +442,11 @@ elif app_mode == "🎓 UCAS Personal Statement":
                         else:
                             st.session_state.generated_essay_json = result_json
                             st.session_state.generated_essay = "draft_generated"
+                            
+                            # SHOW THE AI THINKING (Visible Chain of Thought)
+                            if "analysis_log" in result_json:
+                                with st.expander("🧠 AI Analysis & Strategy (Step-by-Step)", expanded=True):
+                                    st.write(result_json["analysis_log"])
                     except Exception as e:
                          st.error(f"Frontend Error: {e}")
 
