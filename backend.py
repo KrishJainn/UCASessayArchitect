@@ -172,13 +172,27 @@ Also NEVER use: "illuminated", "profound", "meticulous", "moreover", "furthermor
 
 Q3 SPECIFIC RULES (This section keeps getting flagged as AI):
 - NEVER say "I was responsible for" - say "I handled" or "I ran"
-- NEVER say "This experience provided me with" - just say what you learned directly
+- NEVER say "This experience provided me with" or "This experience gave me"
 - NEVER say "skills directly transferable" or "skills transferable to"
-- NEVER say "within an organizational setting"
+- NEVER say "within an organizational setting" or "real-world setting"
 - NEVER say "taught me how to" - say "I learned to" or just describe what you did
-- NEVER use "direct insight into" 
+- NEVER use "direct insight into" or "clear understanding of"
+- NEVER say "Alongside this" or "Furthermore" or "Additionally"
+- NEVER say "continuously developed" or "have continuously"
+- NEVER say "outside of classroom settings"
+- NEVER say "to deepen my understanding"
+- NEVER say "I taught myself" - just say what you learned
+- NEVER say "going beyond just"
+- NEVER say "This involved working with"
+- NEVER say "which often mirror" 
+- NEVER say "For example, I built" - just say "I built"
+- NEVER say "learning how to" - just say "I learned"
+- NEVER say "This self-directed learning has cultivated"
+- NEVER say "problem-solving capabilities" - say "I got better at fixing things"
+- NEVER say "my ability to navigate"
+- NEVER say "have instilled in me"
 - Keep it SHORT and PUNCHY. Real students don't write corporate-speak.
-- Example BAD: "This experience provided me with direct insight into practical financial management"
+- Example BAD: "This experience gave me a clear understanding of financial responsibility"
 - Example GOOD: "I learned budgeting the hard way - our first event lost money."
 
 WHAT NOT TO DO:
