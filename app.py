@@ -402,6 +402,11 @@ elif app_mode == "🎓 UCAS Personal Statement":
                     vectorstore = backend.get_vectorstore()
                     essay_count = backend.get_essay_count()
                     
+                    # CRITICAL: Check if brain is empty BEFORE searching
+                    if essay_count == 0:
+                        st.error("🧠 **Brain is empty!** Please go to 'Admin: Train Brain' and upload essay PDFs first.")
+                        st.stop()
+                    
                     # Get a broad sample first (up to 20 chunks for analysis)
                     all_essays = vectorstore.similarity_search("personal statement motivation academic", k=min(essay_count, 20))
                     corpus_text = "\n\n".join([doc.page_content for doc in all_essays])
@@ -409,7 +414,7 @@ elif app_mode == "🎓 UCAS Personal Statement":
                     # 3. STAGE 2: Get the BEST exemplars matched to THIS student's profile
                     # Combine course + motivation for targeted retrieval
                     search_query = f"{st.session_state.target_course} {st.session_state.student_story[:500]}"
-                    best_exemplars = vectorstore.similarity_search(search_query, k=5)
+                    best_exemplars = vectorstore.similarity_search(search_query, k=min(essay_count, 5))
                     retrieved_exemplars = "\n\n---EXEMPLAR---\n\n".join([doc.page_content for doc in best_exemplars])
                     
                     # 4. Load Brain Config (Rules)
