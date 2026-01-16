@@ -33,7 +33,7 @@ import random
 # ============================================================================
 # SAFE GENERATE CONTENT - Rate Limit Protection
 # ============================================================================
-def safe_generate_content(client, contents, model="gemini-2.5-flash", config=None):
+def safe_generate_content(client, contents, model="gemini-3-flash", config=None):
     """
     Wrapper for client.models.generate_content with strict 429 backoff.
     """
@@ -208,7 +208,7 @@ Return JSON with keys: "analysis_log", "q1_answer", "q2_answer", "q3_answer"
     try:
         # Blueprint 7.0: SCORCHED EARTH - High Temp for Chaos
         response = client.models.generate_content(
-            model="gemini-2.5-flash", 
+            model="gemini-3-flash", 
             contents="Execute SCORCHED EARTH. Be Concrete. Be Boring. No Poetry.",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
@@ -543,7 +543,7 @@ def analyze_all_essays():
         brain_config["_metadata"] = {
             "analyzed_chunks": len(all_docs_text),
             "analysis_date": str(os.popen("date").read().strip()),
-            "model_used": "gemini-2.5-flash"
+            "model_used": "gemini-3-flash"
         }
         
         # Save to file
