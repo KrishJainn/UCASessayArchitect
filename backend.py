@@ -103,6 +103,15 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
     else:
         banned = []
 
+    # Extract Learned Style & Structure (The "Brain")
+    style_bible = brain_config.get("Style_Bible", [])
+    style_rules = "\n".join([f"- {r}" for r in style_bible]) if isinstance(style_bible, list) else "Mimic the retrieved exemplars closely."
+    
+    structure_bp = brain_config.get("Structure_Blueprint", {})
+    q1_pct = structure_bp.get("Q1_percentage", 20)
+    q2_pct = structure_bp.get("Q2_percentage", 25)
+    q3_pct = structure_bp.get("Q3_percentage", 55)
+
     # THE 'RECURSIVE CRITICISM' PROMPT
     # This forces the AI to check its own work 3 times before outputting.
     system_instruction = f""" ROLE: You are the world's most critical UCAS Editor.
@@ -110,28 +119,40 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
 INPUT DATA 1: STYLE BIBLE (THE GOLD STANDARD) 
 {retrieved_exemplars}
 
+LEARNED STYLE RULES (MUST FOLLOW):
+{style_rules}
+
 INPUT DATA 2: USER RAW NOTES 
 {user_profile}
 
-TASK: Produce 3 distinct UCAS answers.
+TASK: Produce 3 distinct UCAS answers that form a COMPLETE 4000-character Personal Statement.
+
+CRITICAL REQUIREMENT: 
+- TOTAL LENGTH MUST BE 3800-4000 CHARACTERS.
+- DO NOT WRITE SHORT ESSAYS. EXPAND ON DETAILS.
+- USE THE "SHOW, DON'T TELL" METHOD FOR EVERY CLAIM.
+
+Approximate Splits:
+- Q1 (Motivation): ~{int(4000 * q1_pct / 100)} chars
+- Q2 (Academics): ~{int(4000 * q2_pct / 100)} chars
+- Q3 (Activities): ~{int(4000 * q3_pct / 100)} chars
 
 INTERNAL THOUGHT PROCESS (You must do this):
 
-ANALYZE: Read the Style Bible. What makes it good? (e.g., specific verbs, lack of adjectives).
+ANALYZE: Read the Style Bible. Note the specific sentence structures and lack of clichés.
 
-DRAFT 1: Write a rough draft based on User Notes.
+DRAFT 1: Write a detailed draft based on User Notes. EXPAND every point with evidence.
 
-CRITIQUE 1: Compare Draft 1 to the Style Bible. Is it too robotic? Too generic?
+CRITIQUE 1: check character count. If < 3800, YOU MUST EXPAND.
+- Is the tone academic enough?
+- Did I use the exemplars' sentence structure?
 
-DRAFT 2 (FINAL): Rewrite Draft 1 to be 100% human-sounding.
+DRAFT 2 (FINAL): Rewrite to be 100% human-sounding and FULL LENGTH.
 
 OUTPUT RULES:
-
-Q3 (Activities) must mimic the length ratio of the Style Bible.
-
-NO BANNED WORDS: {banned}
-
-OUTPUT JSON strictly. """
+1. STRICTLY FOLLOW THE CHARACTER COUNTS ABOVE.
+2. NO BANNED WORDS: {banned}
+3. OUTPUT JSON strictly. """
 
     try:
         response = client.models.generate_content(
