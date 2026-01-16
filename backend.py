@@ -130,8 +130,9 @@ GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
 
 TASK:
 Write the Personal Statement in 3 sections.
-- **STRUCTURE:** Follow the length ratios found in the 'Structure' or 'Style Bible' inputs.
-- **TOTAL LENGTH: 3600-4200 Characters.** (STRICT AGGREGATE LIMIT).
+- **STRUCTURE:** Analyse the Input Exemplars to decide strictly how to split the length.
+- **TOTAL LENGTH: 600-650 Words (approx 3600-3800 Characters).** 
+- **CRITICAL:** The User's system yields an ERROR if you exceed 4000 characters. You MUST write concisely.
 - TONE: Sharp, Intellectual, Direct.
 - BANNED: {banned} + [deeply, profoundly, framework, landscape, tapestry, utilize, leverage, underscored, solidified, immersion, multifaceted]
 
