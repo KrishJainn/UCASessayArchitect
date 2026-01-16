@@ -209,6 +209,21 @@ Return JSON with keys: "analysis_log", "q1_answer", "q2_answer", "q3_answer"
         result = json.loads(response.text)
         if isinstance(result, list):
             result = result[0] if len(result) > 0 else {}
+        
+        # HARD LIMIT ENFORCEMENT (4000 chars max)
+        q1 = result.get("q1_answer", "")
+        q2 = result.get("q2_answer", "")
+        q3 = result.get("q3_answer", "")
+        total = len(q1) + len(q2) + len(q3)
+        
+        if total > 4000:
+            # Proportionally truncate each section
+            ratio = 3950 / total  # Target 3950 to leave buffer
+            result["q1_answer"] = q1[:int(len(q1) * ratio)]
+            result["q2_answer"] = q2[:int(len(q2) * ratio)]
+            result["q3_answer"] = q3[:int(len(q3) * ratio)]
+            print(f"TRUNCATED: {total} -> {len(result['q1_answer']) + len(result['q2_answer']) + len(result['q3_answer'])}")
+        
         return result
 
     except Exception as e:
