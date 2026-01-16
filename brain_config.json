@@ -1,19 +1,14 @@
 {
   "Structure_Blueprint": {
-    "Q1_percentage": 22,
-    "Q2_percentage": 33,
-    "Q3_percentage": 45,
+    "Q1_percentage": 20,
+    "Q2_percentage": 55,
+    "Q3_percentage": 25,
     "typical_total_chars": 4000,
-    "notes": "Fixed structure: 22/33/45 as specified by user"
+    "notes": "Pending analysis"
   },
-  "Vocabulary_Bank": [],
-  "Section_Tone": {},
-  "Sentence_Templates": [],
-  "Style_Bible": [],
-  "Anti_Patterns": [],
   "_metadata": {
-    "analyzed_chunks": 0,
-    "analysis_date": "Manual",
-    "model_used": "user-specified"
+    "analyzed_chunks": 190,
+    "analysis_date": "Fri Jan 16 13:48:58 2026",
+    "model_used": "retrain_script"
   }
 }
