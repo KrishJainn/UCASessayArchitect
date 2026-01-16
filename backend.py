@@ -263,6 +263,28 @@ Return JSON with keys: "analysis_log", "q1_answer", "q2_answer", "q3_answer"
             result["q3_answer"] = truncate_at_sentence(q3, int(len(q3) * ratio))
             print(f"TRUNCATED: {total} -> {len(result['q1_answer']) + len(result['q2_answer']) + len(result['q3_answer'])}")
         
+        # GRAMMAR CHECK - Fix any grammar issues before output
+        def grammar_check(text, client):
+            if not text or len(text) < 50:
+                return text
+            try:
+                grammar_response = client.models.generate_content(
+                    model="gemini-2.0-flash",
+                    contents=f"""Fix ONLY grammar and spelling errors in this text. 
+Do NOT change the meaning, style, or add any new content.
+Return ONLY the corrected text, nothing else.
+
+Text: {text}""",
+                    config=types.GenerateContentConfig(temperature=0.1)
+                )
+                return grammar_response.text.strip()
+            except:
+                return text  # Return original if grammar check fails
+        
+        result["q1_answer"] = grammar_check(result.get("q1_answer", ""), client)
+        result["q2_answer"] = grammar_check(result.get("q2_answer", ""), client)
+        result["q3_answer"] = grammar_check(result.get("q3_answer", ""), client)
+        
         return result
 
     except Exception as e:
