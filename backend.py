@@ -158,24 +158,24 @@ Take the student's raw information and rewrite it in the EXACT SAME STYLE as the
 STUDENT RAW INFORMATION:
 {user_profile}
 
-LENGTH REQUIREMENTS (CRITICAL - MUST FILL):
-- Q1: EXACTLY {q1_limit} characters (NOT LESS)
-- Q2: EXACTLY {q2_limit} characters (NOT LESS)
-- Q3: EXACTLY {q3_limit} characters (NOT LESS)
-- TOTAL: Between 3800-4000 characters
+LENGTH REQUIREMENTS (STRICT - UCAS HARD LIMIT):
+- Q1: Around {q1_limit} characters
+- Q2: Around {q2_limit} characters
+- Q3: Around {q3_limit} characters
+- TOTAL: MAXIMUM 3900 characters (UCAS limit is 4000 - stay UNDER it!)
 
-If your output is too short, ADD MORE DETAIL. Expand on ideas. Include more examples.
-The essays above are full-length. Your output MUST be full-length too.
+BANNED WORDS (NEVER USE THESE - they flag as AI):
+{BANNED_WORDS}
+Also NEVER use: "illuminated", "profound", "meticulous", "moreover", "furthermore", "in conclusion", "testament", "landscape"
 
 WHAT NOT TO DO:
-- Do NOT write like an AI (no "Furthermore", "Moreover", "In conclusion")
-- Do NOT use generic phrases ("passionate about", "inspired me to", "sparked my interest")
-- Do NOT summarize - expand and elaborate
-- Do NOT be brief - be thorough like the examples
+- Do NOT write like an AI
+- Do NOT use fancy words like "profound", "meticulous", "illuminated"
+- Do NOT use transitions like "Moreover", "Furthermore", "In conclusion"
+- Do NOT be too wordy - stay UNDER 3900 total characters
 
 OUTPUT FORMAT:
 Return JSON with keys: "analysis_log", "q1_answer", "q2_answer", "q3_answer"
-Each answer must be a COMPLETE, FULL-LENGTH paragraph matching the character limits above.
 """
 
     try:
