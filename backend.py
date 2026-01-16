@@ -183,23 +183,25 @@ OUTPUT RULES:
 3. OUTPUT JSON strictly. """
 
     try:
-        # Switching to 1.5 Flash (Stable & Fast). "2.5" was causing hangs.
+        # Reverting to 2.5 Flash (User Confirmed usage). 
         response = client.models.generate_content(
-            model="gemini-1.5-flash", 
+            model="gemini-2.5-flash", 
             contents="Execute the Internal Thought Process and output the JSON.",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
-                # REMOVED thinking_config (Not supported on 2.5 Flash - Causes Hang)
+                thinking_config=types.ThinkingConfig(
+                    include_thoughts=False,
+                    thinking_budget=12000 # 12k Tokens (User Request)
+                ),
                 response_mime_type="application/json",
                 response_schema={
                     "type": "OBJECT",
                     "properties": {
-                        "thoughts": {"type": "STRING", "description": "Internal drafting checks"},
                         "q1_answer": {"type": "STRING", "description": "Motivation (Draft 2)"},
                         "q2_answer": {"type": "STRING", "description": "Academics (Draft 2)"},
                         "q3_answer": {"type": "STRING", "description": "Activities (Draft 2)"}
                     },
-                    "required": ["thoughts", "q1_answer", "q2_answer", "q3_answer"]
+                    "required": ["q1_answer", "q2_answer", "q3_answer"]
                 },
                 temperature=1.0 
             )
