@@ -79,7 +79,7 @@ BANNED_WORDS = [
 
 def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_config: dict) -> dict:
     """ 
-    Phoenix 4.0: ANTIGRAVITY BLUEPRINT 2.0 (Audit -> Bluepint -> Draft).
+    Phoenix 5.0: THE HUMANIZER PROTOCOL.
     """
     
     api_key = os.environ.get("GEMINI_API_KEY")
@@ -106,99 +106,95 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
     user_complaints = ["driven to", "underpinning", "instilled", "akin to", "demystify", "power of", 
                        "drawn to", "allure", "fascinated", "deeply", "profoundly", "framework", 
                        "landscape", "tapestry", "utilize", "leverage", "captivated", "glimpsing", 
-                       "eager", "revealing", "precise logic"]
+                       "eager", "revealing", "precise logic", "steered my interest", "forms the core",
+                       "presents a compelling", "my ambition is", "felt like discerning", "burgeoning",
+                       "illuminated", "inherent irrationality", "bedrock assumptions", "dual perspective",
+                       "forms the core of my motivation", "revelation steered", "beyond mere", "intricate calculus",
+                       "decode", "propelling", "intersection of"]
                        
     master_banned = list(set(BANNED_WORDS + BANNED_PHRASES + banned + user_complaints))
     
     # VOCAB INJECTION: force the model to use the student's unique words
     vocab_bank = brain_config.get('Vocabulary_Bank', [])
+    sentence_templates = brain_config.get('Sentence_Templates', [])
+    
     forced_vocab = []
     if len(vocab_bank) >= 7:
         forced_vocab = random.sample(vocab_bank, 7) 
     else:
         forced_vocab = vocab_bank # Use all if less than 7
 
-    # THE 'SNIPER' PROMPT
-    system_instruction = f""" ROLE: You are the 'Antigravity' Ghostwriter.
+    # DYNAMIC STRUCTURE LOGIC
+    # Load blueprint or default to standard structure if missing
+    blueprint = brain_config.get("Structure_Blueprint", {})
+    q1_pct = blueprint.get("Q1_percentage", 20) / 100
+    q2_pct = blueprint.get("Q2_percentage", 40) / 100
+    q3_pct = blueprint.get("Q3_percentage", 40) / 100
+    
+    total_target = 3900 # Safe target under 4000
+    q1_limit = int(total_target * q1_pct)
+    q2_limit = int(total_target * q2_pct)
+    q3_limit = int(total_target * q3_pct)
 
-INPUT 1: THE STYLE BIBLE (Adhere to this VOICE)
-{retrieved_exemplars}
+    # THE 'ULTRA-HUMAN' PROMPT (Phoenix 8.0: COLLOQUIAL MODE)
+    # This prompt PASSED AI detection. DO NOT CHANGE.
+    system_instruction = f"""You are a 17 year old student writing a UCAS personal statement IN A HURRY.
 
-INPUT 2: USER RAW NOTES (Ingredients)
+CRITICAL: Modern AI detectors look for:
+1. Perfect grammar (humans make mistakes)
+2. Balanced sentence length (humans are inconsistent) 
+3. Formal transitions (humans skip these)
+4. "Correct" academic structure (humans ramble)
+
+YOUR JOB: Write like an actual stressed teenager, NOT a polished essay.
+
+REQUIREMENTS:
+- Start sentences with "And" or "But" sometimes
+- Use contractions (I'm, can't, didn't, won't)
+- Some sentences can be incomplete
+- NO formal transitions like "Furthermore" or "Moreover"
+- Include at least 2 self-corrections (e.g. "I wanted to - actually no, I needed to")
+- Be direct and colloquial
+- Include one minor typo
+- Dont use too many commas
+- Use dashes (–) and ellipsis (...) like real teens do
+
+STUDENT INFO TO USE:
 {user_profile}
 
-INPUT 3: DEEP BLUEPRINT (The DNA)
-Vocabulary: {vocab_bank[:20]}
-MANDATORY VOCAB TO USE: {forced_vocab} (You MUST use these 7 words naturally).
+Write 3 paragraphs total (about {q1_limit + q2_limit + q3_limit} characters total):
+- Para 1 ({q1_limit} chars): Why this subject - be personal, raw
+- Para 2 ({q2_limit} chars): Academic stuff - books you read, what you disagreed with
+- Para 3 ({q3_limit} chars): What you did - projects, jobs, activities
 
-YOUR PROCESS (STEP-BY-STEP):
-1. **ANALYZE:** Read the "Style Bible". Note the average sentence length. Note the lack of adjectives.
-2. **PLAN:** Select the 7 mandatory words. Decide where they fit.
-3. **DRAFT:** Write the 3 sections, strictly adhering to the "Action Opener" and "In Media Res" rules.
+Be raw. Be imperfect. Be human. Sound like you're talking to a friend.
 
-STRICT RULES FOR HUMANIZATION (SYNTAX CLONING):
-1. **NO THESIS STATEMENTS:** 
-   - NEVER Start with "I want to study Economics because...". (Score: 100% AI).
-   - NEVER Start with "I am captivated by...".
-   - Start IN MEDIA RES (In the middle of the action).
-2. **SYNTAX CLONING:** 
-   - Look at the Exemplars. If they use short sentences, you use short sentences.
-   - If they use a fragment ("Strange. But true."), YOU use a fragment.
-3. **NO META-COMMENTARY:** 
-   - DELETE "This experience taught me...", "This role highlighted...".
-   - Just tell the story.
-4. **USE SOPHISTICATED VOCABULARY:**
-   - Do NOT dumb it down. Use the high-level vocabulary found in the 'Style Bible'.
-   - If the exemplar uses "epistemological", YOU use that level of word.
-   - AVOID generic adjectives ("good", "hard", "interesting"). Use precise ones.
-
-BAD ROBOTIC EXAMPLE (DO NOT WRITE LIKE THIS):
-"I want to study Economics because I am captivated by the mathematical structures..." (Score: 100% AI).
-
-GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
-"The 2008 crash defied every model in my textbook. That failure fascinated me more than the theory itself." (Score: 0% AI).
-
-TASK:
-Write the Personal Statement in 3 sections with STRICT TARGET RANGES (DO NOT WRITE SHORT, DO NOT OVERSHOOT):
-- **Q1 (Motivation):** Target 800 - 950 Characters. (Start with ACTION).
-- **Q2 (Academics):** Target 1200 - 1400 Characters.
-- **Q3 (Activities):** Target 1400 - 1600 Characters.
-- **TOTAL LIMIT:** Must fall between 3600 and 4100 Characters.
-- TONE: Sharp, Intellectual, Direct.
-- BANNED: {master_banned}
-
-OUTPUT FORMAT:
-- JSON with keys: 
-  - "analysis_log": "Brief 2-sentence summary of the Exemplar's style that you will mimic.",
-  - "q1_answer", 
-  - "q2_answer", 
-  - "q3_answer".
-- DO NOT Use Markdown.
+OUTPUT FORMAT: Return ONLY a JSON object with keys "q1_answer", "q2_answer", "q3_answer", "analysis_log".
 """
 
     try:
-        # Blueprint 3.0: Structural Mirroring + 12k Thinking
+        # Blueprint 7.0: SCORCHED EARTH - High Temp for Chaos
         response = client.models.generate_content(
             model="gemini-2.5-flash", 
-            contents="Execute Step 1 (Analyze) and Step 2 (Draft) now.",
+            contents="Execute SCORCHED EARTH. Be Concrete. Be Boring. No Poetry.",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
                 thinking_config=types.ThinkingConfig(
                     include_thoughts=False,
-                    thinking_budget=12000 # 12k Safe Budget
+                    thinking_budget=16000 
                 ),
                 response_mime_type="application/json",
                 response_schema={
                     "type": "OBJECT",
                     "properties": {
-                        "analysis_log": {"type": "STRING", "description": "Step 1: Your analysis of the style to clone"},
-                        "q1_answer": {"type": "STRING", "description": "Motivation (Human Style)"},
-                        "q2_answer": {"type": "STRING", "description": "Academics (Human Style)"},
-                        "q3_answer": {"type": "STRING", "description": "Activities (Human Style)"}
+                        "analysis_log": {"type": "STRING", "description": "Confirm you deleted all metaphors."},
+                        "q1_answer": {"type": "STRING", "description": "Hook (Concrete)"},
+                        "q2_answer": {"type": "STRING", "description": "Academics (Argumentative)"},
+                        "q3_answer": {"type": "STRING", "description": "Activities (Direct)"}
                     },
                     "required": ["analysis_log", "q1_answer", "q2_answer", "q3_answer"]
                 },
-                temperature=1.0 
+                temperature=2.0 # Maximum chaos - this is what passed AI detection
             )
         )
         
@@ -227,7 +223,17 @@ BANNED_PHRASES = [
     "I believe that",
     "It goes without saying",
     "needless to say",
-    "at the end of the day"
+    "at the end of the day",
+    "steered my interest",
+    "forms the core of",
+    "presents a compelling",
+    "felt like discerning",
+    "illuminated the",
+    "unveiled the",
+    "deciphering the tapestry",
+    "dual perspective",
+    "inherent irrationality",
+    "bedrock assumptions"
 ]
 
 # DEFAULT STYLE GUIDE - Fallback if extraction fails
@@ -287,12 +293,12 @@ def quality_gate(essay_text):
     
     # 6. Check character count
     char_count = len(essay_text)
-    if char_count > 4200:
-        issues.append(f"Over limit ({char_count} chars)")
-        score -= 15
-    elif char_count < 3500:
+    if char_count > 4000:
+        issues.append(f"OVER UCAS LIMIT ({char_count}/4000 chars)")
+        score -= 100 # Instant Fail
+    elif char_count < 3000:
         issues.append(f"Too short ({char_count} chars)")
-        score -= 10
+        score -= 20
     
     passed = score >= 60 and len([i for i in issues if "banned" in i.lower()]) == 0
     
@@ -377,53 +383,76 @@ def analyze_all_essays():
     client = genai.Client(api_key=api_key)
     config = types.GenerateContentConfig(temperature=0.2)
     
-    # Get ALL documents from the vectorstore
+    # Get ALL documents from the vectorstore (True "All", not just similarity)
     print(f"Retrieving all {essay_count} chunks...")
     vectorstore = get_vectorstore()
     
-    # Retrieve all documents (use a high k value)
-    all_docs = vectorstore.similarity_search("personal statement", k=min(essay_count, 200))
-    all_text = "\n\n===ESSAY BOUNDARY===\n\n".join([doc.page_content for doc in all_docs])
+    # Access the underlying Chroma collection to get EVERYTHING
+    # similarity_search is biased; generic 'get' is complete.
+    try:
+        results = vectorstore._collection.get(include=['documents'])
+        all_docs_text = results.get('documents', [])
+        all_text = "\n\n===ESSAY BOUNDARY===\n\n".join(all_docs_text)
+    except Exception as e:
+        print(f"Error fetching all docs: {e}")
+        return {"error": str(e)}
     
-    print(f"Analyzing {len(all_docs)} document chunks...")
+    print(f"Analyzing {len(all_docs_text)} document chunks...")
     
-    analysis_prompt = f"""Analyze these {len(all_docs)} Personal Statement excerpts. 
-Reverse-engineer the student's unique "Linguistic Fingerprint".
-
-OUTPUT STRICT JSON ONLY (no markdown):
-{{
-    "Structure_Blueprint": {{
-        "Q1_percentage": <number>,
-        "Q2_percentage": <number>,
-        "Q3_percentage": <number>,
-        "typical_total_chars": 3800,
-        "notes": "brief observation about structure"
-    }},
-    "Vocabulary_Bank": [
-        "List 50+ specific words this student uses (e.g., 'galvanized', 'curiosity', 'realm'). Do NOT list generic words."
-    ],
-    "Sentence_Templates": [
-        "List 15+ sentence structures to fill in. Example: 'The intersection of [Subject] and [Subject] led me to...'",
-        "Example: 'While I initially thought [X], I soon realized [Y]...'"
-    ],
-    "Narrative_Archetypes": [
-        "Describe 3 abstract storytelling arcs found in the essays (e.g., 'The Problem-Solver Arc', 'The Academic Epiphany Arc')"
-    ],
-    "Style_Bible": [
-        "Rule 1: <strict writing rule>",
-        "Rule 2: <another pattern>"
-    ],
-    "Anti_Patterns": [
-        "things these essays NEVER do (e.g. 'Never use passive voice')"
-    ]
-}}
-
-ESSAY EXCERPTS:
-{all_text[:25000]}
-"""
+    analysis_prompt = f"""Analyze these {len(all_docs_text)} Personal Statement excerpts. 
+    OBJECTIVE: Extract the "Human Fingerprint" (Unique Sentence Structures) and EXACT STRUCTURE.
+    
+    TASK 1: EXACT STRUCTURE ANALYSIS
+    - Look at the provided essays.
+    - ESTIMATE the character split between:
+      - Q1 (Introduction/Motivation/Hook)
+      - Q2 (Academic Paragraphs/Supercurriculars)
+      - Q3 (Extracurriculars/Conclusion)
+    - The numbers MUST add up to 100%.
+    - DO NOT default to 25/50/25. Look at the actual text density.
+    
+    TASK 2: SYNTAX HUNTER
+    - Extract unique, jagged sentence structures.
+    - Ignore cliches.
+    
+    OUTPUT STRICT JSON ONLY (no markdown):
+    {{
+        "Structure_Blueprint": {{
+            "Q1_percentage": <number>,
+            "Q2_percentage": <number>,
+            "Q3_percentage": <number>,
+            "typical_total_chars": 4000,
+            "notes": "Describe the observed structure (e.g. 'Heavy academic focus', or 'Long narrative intro')."
+        }},
+        "Vocabulary_Bank": [
+            "List 50+ specific words (e.g., 'galvanized', 'curiosity', 'realm')."
+        ],
+        "Section_Tone": {
+            "Q1_tone": "Describe the tone of the opening hooks (e.g. 'Urgent', 'Reflective').",
+            "Q2_tone": "Describe the tone of the academic critique sections.",
+            "Q3_tone": "Describe the tone of the practical evidence sections."
+        },
+        "Sentence_Templates": [
+            "Extract 10 UNIQUE sentence structures (e.g., 'The problem wasn't X; it was Y.').",
+            "DO NOT extract 'I did X and learned Y'." 
+        ],
+        "Style_Bible": [
+            "Rule 1: <strict writing rule>",
+            "Rule 2: <another pattern>"
+        ],
+        "Anti_Patterns": [
+            "things these essays NEVER do (e.g. 'Never use passive voice')"
+        ]
+    }}
+    
+    ESSAY EXCERPTS:
+    {all_text[:25000]}
+    """
     
     try:
         # Safe call
+        # Use a high temperature to find unique things
+        config.temperature = 0.7 
         response = safe_generate_content(client, analysis_prompt, config=config)
         result_text = response.text.strip()
         
@@ -453,6 +482,29 @@ ESSAY EXCERPTS:
         print(f"Analysis failed: {e}")
         return {"error": str(e)}
 
+def reset_brain():
+    """
+    DANGER: Wipes the entire vector database and brain config.
+    Used when user wants to re-upload fresh essays.
+    """
+    print("WARNING: Resetting Brain...")
+    try:
+        # 1. Reset Chroma (if possible easily) or just delete the folder
+        if os.path.exists(DB_PATH):
+            import shutil
+            shutil.rmtree(DB_PATH)
+            print(f"Deleted DB at {DB_PATH}")
+            
+        # 2. Delete Brain Config
+        if os.path.exists(BRAIN_CONFIG_PATH):
+            os.remove(BRAIN_CONFIG_PATH)
+            print(f"Deleted config at {BRAIN_CONFIG_PATH}")
+            
+        return True
+    except Exception as e:
+        print(f"Error resetting brain: {e}")
+        return False
+        
 def load_brain_config():
     """Load the brain_config.json if it exists."""
     if os.path.exists(BRAIN_CONFIG_PATH):
