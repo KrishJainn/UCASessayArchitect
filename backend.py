@@ -183,8 +183,9 @@ OUTPUT RULES:
 3. OUTPUT JSON strictly. """
 
     try:
+        # Switching to 1.5 Flash (Stable & Fast). "2.5" was causing hangs.
         response = client.models.generate_content(
-            model="gemini-2.5-flash", 
+            model="gemini-1.5-flash", 
             contents="Execute the Internal Thought Process and output the JSON.",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
