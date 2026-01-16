@@ -170,6 +170,17 @@ BANNED WORDS (NEVER USE THESE - they flag as AI):
 {BANNED_WORDS}
 Also NEVER use: "illuminated", "profound", "meticulous", "moreover", "furthermore", "in conclusion", "testament", "landscape"
 
+Q3 SPECIFIC RULES (This section keeps getting flagged as AI):
+- NEVER say "I was responsible for" - say "I handled" or "I ran"
+- NEVER say "This experience provided me with" - just say what you learned directly
+- NEVER say "skills directly transferable" or "skills transferable to"
+- NEVER say "within an organizational setting"
+- NEVER say "taught me how to" - say "I learned to" or just describe what you did
+- NEVER use "direct insight into" 
+- Keep it SHORT and PUNCHY. Real students don't write corporate-speak.
+- Example BAD: "This experience provided me with direct insight into practical financial management"
+- Example GOOD: "I learned budgeting the hard way - our first event lost money."
+
 WHAT NOT TO DO:
 - Do NOT write like an AI
 - Do NOT use fancy words like "profound", "meticulous", "illuminated"
