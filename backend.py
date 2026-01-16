@@ -263,47 +263,44 @@ DB_PATH = os.path.join(BASE_DIR, 'chroma_db')
 # ============================================================================
 # CACHED EMBEDDING MODEL (Prevents reloading on every Streamlit interaction)
 # ============================================================================
-_cached_embedding_function = None
-_cached_vectorstore = None
 
+# Helper to get ST cache safely
+def get_st_cache_resource():
+    try:
+        import streamlit as st
+        return st.cache_resource
+    except ImportError:
+        return lambda func: func
+
+@get_st_cache_resource()
 def get_embedding_function():
     """Returns a cached embedding function to avoid reloading the model."""
-    global _cached_embedding_function
-    if _cached_embedding_function is None:
-        print("DEBUG: Loading embedding model (first time only)...")
-        _cached_embedding_function = HuggingFaceEmbeddings(
-            model_name="all-MiniLM-L6-v2",
-            model_kwargs={'device': 'cpu'}
-        )
-    return _cached_embedding_function
+    print("DEBUG: Loading embedding model (first time only)...")
+    return HuggingFaceEmbeddings(
+        model_name="all-MiniLM-L6-v2",
+        model_kwargs={'device': 'cpu'}
+    )
 
-# Helper to initialize the vector store with explicit persistence
-def get_vectorstore():
-    global _cached_vectorstore
-    
-    # Return cached if available
-    if _cached_vectorstore is not None:
-        return _cached_vectorstore
-    
-    # Initialize PersistentClient (Force disk storage)
+@get_st_cache_resource()
+def get_vectorstore_client():
+    """Cached connection to the persistent database."""
     print(f"DEBUG: Connecting to Persistent Database at: {DB_PATH}")
-    client = chromadb.PersistentClient(path=DB_PATH)
-    
-    # Use cached embedding function
+    return chromadb.PersistentClient(path=DB_PATH)
+
+def get_vectorstore():
+    """Returns the vectorstore object using the cached client and embeddings."""
+    client = get_vectorstore_client()
     embedding_function = get_embedding_function()
     
-    # LangChain wrapper around the persistent client
-    _cached_vectorstore = Chroma(
+    return Chroma(
         client=client,
         collection_name="college_essays",
         embedding_function=embedding_function,
     )
-    
-    return _cached_vectorstore
 
 def get_essay_count():
     try:
-        # Check if the directory exists first to avoid unnecessary initialization errors
+        # Check if the directory exists first
         if not os.path.exists(DB_PATH):
             return 0
             
@@ -312,7 +309,6 @@ def get_essay_count():
         count = vectorstore._collection.count()
         return count
     except Exception as e:
-        # Catching all errors including the torch/tensor ones to prevent app crash
         print(f"Error counting essays: {e}")
         return 0
 
