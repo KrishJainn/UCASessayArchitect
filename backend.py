@@ -184,13 +184,13 @@ OUTPUT RULES:
 
     try:
         response = client.models.generate_content(
-            model="gemini-2.5-flash",
+            model="gemini-2.5-flash", 
             contents="Execute the Internal Thought Process and output the JSON.",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
                 thinking_config=types.ThinkingConfig(
                     include_thoughts=False,
-                    thinking_budget=24576 # MAX POWER: 24k tokens for deep style analysis
+                    thinking_budget=12000 # OPTIMIZED: 12k tokens (User Requested Speed Fix)
                 ),
                 response_mime_type="application/json",
                 response_schema={
@@ -202,9 +202,10 @@ OUTPUT RULES:
                     },
                     "required": ["q1_answer", "q2_answer", "q3_answer"]
                 },
-                temperature=1.0 # Max Creativity
+                temperature=1.0 
             )
         )
+        
         result = json.loads(response.text)
         # Handle case where Gemini returns a list instead of dict
         if isinstance(result, list):
@@ -213,6 +214,7 @@ OUTPUT RULES:
             else:
                 return {"error": "Unexpected list response from API"}
         return result
+
     except json.JSONDecodeError as e:
         return {"error": f"JSON Parse Error: {str(e)} - Raw: {response.text[:200]}"}
     except Exception as e:
@@ -326,7 +328,7 @@ def get_embedding_function():
     """Returns a cached embedding function to avoid reloading the model."""
     print("DEBUG: Loading embedding model (first time only)...")
     return HuggingFaceEmbeddings(
-        model_name="all-MiniLM-L6-v2",
+        model_name="sentence-transformers/all-MiniLM-L6-v2", # Explicit repo reduces lookup hangs
         model_kwargs={'device': 'cpu'}
     )
 

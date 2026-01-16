@@ -417,8 +417,8 @@ elif app_mode == "🎓 UCAS Personal Statement":
                     # 3. STAGE 2: Get the BEST exemplars matched to THIS student's profile
                     # Combine course + motivation for targeted retrieval
                     search_query = f"{st.session_state.target_course} {st.session_state.student_story[:500]}"
-                    # INCREASED CONTEXT: Fetch 12 chunks (approx 2-3 full essays) instead of 5
-                    best_exemplars = vectorstore.similarity_search(search_query, k=min(essay_count, 12))
+                    # PERFORMANCE FIX: Reduced from 12 to 6 to prevent timeouts
+                    best_exemplars = vectorstore.similarity_search(search_query, k=min(essay_count, 6))
                     retrieved_exemplars = "\n\n---EXEMPLAR---\n\n".join([doc.page_content for doc in best_exemplars])
                     
                     # 4. Load Brain Config (Rules)
