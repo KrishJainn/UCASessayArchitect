@@ -90,7 +90,18 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
         print(f"WARNING: brain_config is not a dict (got {type(brain_config)}). Using defaults.")
         brain_config = {}
     
-    banned = brain_config.get("Anti_Patterns", {}).get("Banned_Words", [])
+    # DEFENSIVE: Handle Anti_Patterns schema mismatch (List vs Dict)
+    anti_patterns = brain_config.get("Anti_Patterns", [])
+    banned = []
+    
+    if isinstance(anti_patterns, list):
+        # Using the list directly (it contains strings of things to avoid)
+        banned = anti_patterns
+    elif isinstance(anti_patterns, dict):
+        # Legacy/Schema support: Dict containing Banned_Words
+        banned = anti_patterns.get("Banned_Words", [])
+    else:
+        banned = []
 
     # THE 'RECURSIVE CRITICISM' PROMPT
     # This forces the AI to check its own work 3 times before outputting.
