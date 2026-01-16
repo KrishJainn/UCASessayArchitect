@@ -1,8 +1,8 @@
 {
   "Structure_Blueprint": {
-    "Q1_percentage": 20,
-    "Q2_percentage": 55,
-    "Q3_percentage": 25,
+    "Q1_percentage": 22,
+    "Q2_percentage": 33,
+    "Q3_percentage": 45,
     "typical_total_chars": 4000,
     "notes": "Pending analysis"
   },
