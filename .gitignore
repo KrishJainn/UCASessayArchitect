@@ -11,8 +11,8 @@ venv/
 frontend/node_modules/
 frontend/.next/
 
-# Database (created at runtime)
-chroma_db/
+# Database - NOW INCLUDED to persist on Streamlit Cloud
+# chroma_db/
 
 # Logs
 *.log
