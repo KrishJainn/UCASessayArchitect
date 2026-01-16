@@ -466,7 +466,7 @@ def analyze_all_essays():
         
         # Add metadata
         brain_config["_metadata"] = {
-            "analyzed_chunks": len(all_docs),
+            "analyzed_chunks": len(all_docs_text),
             "analysis_date": str(os.popen("date").read().strip()),
             "model_used": "gemini-2.5-flash"
         }
