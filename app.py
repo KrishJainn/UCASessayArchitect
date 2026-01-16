@@ -158,6 +158,9 @@ if app_mode == "⚙️ Admin: Train Brain":
         if uploaded_files:
             if not os.path.exists("pdfs"): os.makedirs("pdfs")
             
+            # CRITICAL: Clear cache before ingesting to ensure fresh DB connection
+            st.cache_resource.clear()
+            
             progress_bar = st.progress(0)
             status_text = st.empty()
             
@@ -167,7 +170,8 @@ if app_mode == "⚙️ Admin: Train Brain":
                     f.write(uploaded_file.getbuffer())
                 
                 status_text.text(f"Ingesting {uploaded_file.name}...")
-                backend.ingest_essay(file_path)
+                result = backend.ingest_essay(file_path)
+                st.write(f"  → {result}")  # Show result for debugging
                 progress_bar.progress((i + 1) / len(uploaded_files))
             
             status_text.text("Training Complete!")
