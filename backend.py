@@ -191,6 +191,10 @@ Q3 SPECIFIC RULES (This section keeps getting flagged as AI):
 - NEVER say "problem-solving capabilities" - say "I got better at fixing things"
 - NEVER say "my ability to navigate"
 - NEVER say "have instilled in me"
+- Q3 ENDING FLOW: The very last sentence of Q3 MUST be a grounded, reflective thought about your future. It should NOT be a corporate summary. 
+- Example BAD: "These experiences have prepared me for the rigors of an Economics degree."
+- Example GOOD: "I want to apply this same data-driven rigor to actual market anomalies I see today."
+
 - Keep it SHORT and PUNCHY. Real students don't write corporate-speak.
 - Example BAD: "This experience gave me a clear understanding of financial responsibility"
 - Example GOOD: "I learned budgeting the hard way - our first event lost money."
@@ -484,11 +488,13 @@ def analyze_all_essays():
     print(f"Analyzing {len(all_docs_text)} document chunks...")
     
     analysis_prompt = f"""Analyze these {len(all_docs_text)} Personal Statement excerpts. 
-    OBJECTIVE: Extract ONLY vocabulary, sentence templates, and tones. DO NOT analyze structure.
+    OBJECTIVE: Extract the DEEP STYLE FOOTPRINT. 
     
-    TASK: SYNTAX HUNTER
+    TASK: SYNTAX HUNTER (Deep Learning)
     - Extract unique, jagged sentence structures.
-    - Ignore cliches.
+    - Extract specific vocabulary used by the student (nouns, verbs, adjectives).
+    - Identify EXACT opening and closing patterns.
+    - DO NOT analyze structure/organization.
     
     OUTPUT STRICT JSON ONLY (no markdown):
     {{
@@ -500,23 +506,25 @@ def analyze_all_essays():
             "notes": "Fixed structure as specified by user"
         }},
         "Vocabulary_Bank": [
-            "List 50+ specific words (e.g., 'galvanized', 'curiosity', 'realm')."
+            "List 100+ specific words and technical terms found in the text."
         ],
         "Section_Tone": {{
-            "Q1_tone": "Describe the tone of the opening hooks (e.g. 'Urgent', 'Reflective').",
-            "Q2_tone": "Describe the tone of the academic critique sections.",
-            "Q3_tone": "Describe the tone of the practical evidence sections."
+            "Q1_tone": "Precise tone of hooks (e.g. 'Punchy/Direct').",
+            "Q2_tone": "Precise tone of theory sections (e.g. 'Critically Argumentative').",
+            "Q3_tone": "Precise tone of evidence sections (e.g. 'Evidence-dense')."
         }},
         "Sentence_Templates": [
-            "Extract 10 UNIQUE sentence structures (e.g., 'The problem wasn't X; it was Y.').",
-            "DO NOT extract 'I did X and learned Y'." 
+            "Extract 20+ UNIQUE sentence footprints (e.g., 'The X wasn't just Y; it was Z.').",
+            "Focus on how the student uses colons, dashes, and varied length." 
         ],
         "Style_Bible": [
-            "Rule 1: <strict writing rule>",
-            "Rule 2: <another pattern>"
+            "Rule 1: <how they introduce evidence>",
+            "Rule 2: <how they conclude a section>",
+            "Rule 3: <how they handle technical jargon>"
         ],
         "Anti_Patterns": [
-            "things these essays NEVER do (e.g. 'Never use passive voice')"
+            "Phrases or styles they NEVER use.",
+            "Words they avoid."
         ]
     }}
     

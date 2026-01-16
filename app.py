@@ -442,8 +442,8 @@ elif app_mode == "🎓 UCAS Personal Statement":
                     # 3. STAGE 2: Get the BEST exemplars matched to THIS student's profile
                     # Combine course + motivation for targeted retrieval
                     search_query = f"{st.session_state.target_course} {st.session_state.student_story[:500]}"
-                    # PERFORMANCE UPDATE: Gemini Flash has 1M context. Increasing to 30 for max style transfer.
-                    best_exemplars = vectorstore.similarity_search(search_query, k=min(essay_count, 30))
+                    # PERFORMANCE UPDATE: User requested k=3 for precise style transfer.
+                    best_exemplars = vectorstore.similarity_search(search_query, k=min(essay_count, 3))
                     retrieved_exemplars = "\n\n---EXEMPLAR---\n\n".join([doc.page_content for doc in best_exemplars])
                     
                     # 4. Load Brain Config (Rules)
