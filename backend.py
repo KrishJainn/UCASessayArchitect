@@ -235,13 +235,13 @@ Return JSON with keys: "analysis_log", "q1_answer", "q2_answer", "q3_answer"
         if isinstance(result, list):
             result = result[0] if len(result) > 0 else {}
         
-        # HARD LIMIT ENFORCEMENT (4000 chars max)
+        # HARD LIMIT ENFORCEMENT (4200 chars max - allows proper endings)
         q1 = result.get("q1_answer", "")
         q2 = result.get("q2_answer", "")
         q3 = result.get("q3_answer", "")
         total = len(q1) + len(q2) + len(q3)
         
-        if total > 4000:
+        if total > 4200:
             # Helper function to truncate at last complete sentence
             def truncate_at_sentence(text, max_chars):
                 if len(text) <= max_chars:
