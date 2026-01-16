@@ -97,12 +97,27 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
     elif isinstance(anti_patterns, dict):
         banned = anti_patterns.get("Banned_Words", [])
     
-    # CRITICAL: Always append the Global Hardcoded Banned Words (Safety Net)
-    # This addresses user request to "pinpoint reduces" AI generated stuff.
-    banned = list(set(banned + BANNED_WORDS))
+    # CRITICAL: Merge all banned lists into one Master List
+    # 1. Hardcoded Words (Generic AI)
+    # 2. Hardcoded Phrases (Clichés)
+    # 3. Dynamic Anti-Patterns (from Brain Config)
+    # 4. User-Specific Complaints (driven to, etc.)
+    
+    user_complaints = ["driven to", "underpinning", "instilled", "akin to", "demystify", "power of", 
+                       "drawn to", "allure", "fascinated", "deeply", "profoundly", "framework", 
+                       "landscape", "tapestry", "utilize", "leverage"]
+                       
+    master_banned = list(set(BANNED_WORDS + BANNED_PHRASES + banned + user_complaints))
+    
+    # VOCAB INJECTION: force the model to use the student's unique words
+    vocab_bank = brain_config.get('Vocabulary_Bank', [])
+    forced_vocab = []
+    if len(vocab_bank) >= 7:
+        forced_vocab = random.sample(vocab_bank, 7) 
+    else:
+        forced_vocab = vocab_bank # Use all if less than 7
 
-    # THE 'STRUCTURAL MIRROR' PROMPT
-    # This forces the AI to copy the SYNTAX of the exemplars, not just the tone.
+    # THE 'SNIPER' PROMPT
     system_instruction = f""" ROLE: You are the 'Antigravity' Ghostwriter.
 
 INPUT 1: THE STYLE BIBLE (Adhere to this VOICE)
@@ -112,30 +127,38 @@ INPUT 2: USER RAW NOTES (Ingredients)
 {user_profile}
 
 INPUT 3: DEEP BLUEPRINT (The DNA)
-Vocabulary: {brain_config.get('Vocabulary_Bank', [])[:15]}
-Templates: {brain_config.get('Sentence_Templates', [])[:5]}
-Structure: {brain_config.get('Structure_Blueprint', 'Analyze the Exemplars to match their flow')}
+Vocabulary: {vocab_bank[:20]}
+MANDATORY VOCAB TO USE: {forced_vocab} (You MUST use these 7 words naturally).
 
-STRICT RULES FOR HUMANIZATION (STRUCTURAL MIRRORING):
-1. **NO META-COMMENTARY:** Never explain what you learned. (e.g. DELETE "This experience taught me...", "This role highlighted...", "My goal is..."). Just tell the story.
-2. **NO "MY [NOUN]" OPENERS:** Do not start sentences with "My passion", "My interest", "My EPQ", "My responsibilities". *Start with I*. ("I analyzed...", "I led...", "I read...").
-3. **NO LISTS OF 3:** Do not Say "X, Y, and Z". Say "X and Y". Lists of 3 are high-perplexity AI markers.
-4. **KILL THE ADJECTIVE:** Delete "rigorous", "invaluable", "pivotal", "complex".
+STRICT RULES FOR HUMANIZATION (SYNTAX CLONING):
+1. **ACTION OPENERS ONLY:** 
+   - Q1 MUST start with a concrete event ("I sat in the lecture hall..."). 
+   - NEVER start with "I am drawn to", "My passion", or "Economics is".
+2. **SYNTAX CLONING:** 
+   - Look at the Exemplars. If they use short sentences, you use short sentences.
+   - If they use a fragment ("Strange. But true."), YOU use a fragment.
+3. **NO META-COMMENTARY:** 
+   - DELETE "This experience taught me...", "This role highlighted...".
+   - Just tell the story.
+4. **USE SOPHISTICATED VOCABULARY:**
+   - Do NOT dumb it down. Use the high-level vocabulary found in the 'Style Bible'.
+   - If the exemplar uses "epistemological", YOU use that level of word.
+   - AVOID generic adjectives ("good", "hard", "interesting"). Use precise ones.
 
 BAD ROBOTIC EXAMPLE (DO NOT WRITE LIKE THIS):
-"My EPQ served as a practical immersion... This project taught me the importance of..." (Score: 100% AI).
+"I am drawn to Economics... This project instilled in me a desire..." (Score: 100% AI).
 
 GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
-"For my EPQ, I analyzed the 2008 crash. The models failed because they assumed house prices always rise. That mistake cost trillions." (Score: 0% AI).
+"I lost £50 trading generic stocks. That loss taught me more about markets than any textbook." (Score: 0% AI).
 
 TASK:
 Write the Personal Statement in 3 sections with STRICT TARGET RANGES (DO NOT WRITE SHORT, DO NOT OVERSHOOT):
-- **Q1 (Motivation):** Target 800 - 950 Characters. (Be punchy).
+- **Q1 (Motivation):** Target 800 - 950 Characters. (Start with ACTION).
 - **Q2 (Academics):** Target 1200 - 1400 Characters.
 - **Q3 (Activities):** Target 1400 - 1600 Characters.
 - **TOTAL LIMIT:** Must fall between 3600 and 4100 Characters.
 - TONE: Sharp, Intellectual, Direct.
-- BANNED: {banned} + [driven to, underpinning, instilled, akin to, demystify, power of, drawn to, allure, fascinated, deeply, profoundly, framework, landscape, tapestry, utilize, leverage]
+- BANNED: {master_banned}
 
 OUTPUT FORMAT:
 - JSON with keys: q1_answer, q2_answer, q3_answer.
