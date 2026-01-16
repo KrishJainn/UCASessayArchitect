@@ -150,17 +150,6 @@ if app_mode == "⚙️ Admin: Train Brain":
     st.title("⚙️ Admin: Knowledge Base")
     st.markdown("Upload successful UCAS Personal Statements to train the AI on the British academic style.")
     
-    # 🔴 RESET BUTTON (Moved to top for visibility)
-    with st.expander("🗑️ DANGER ZONE: Reset Knowledge Base", expanded=False):
-        st.warning("This will delete all learned patterns and uploaded essays.")
-        if st.button("🔴 Purge All Data & Reset (Start Over)", type="primary", key="reset_top"):
-            if backend.reset_brain():
-                # CRITICAL: Clear Streamlit's cached database connection
-                st.cache_resource.clear()
-                st.success("Brain wiped clean. Cache cleared.")
-                sleep(1)
-                st.rerun()
-    
     # Upload Section
     st.subheader("📤 Upload Essays")
     uploaded_files = st.file_uploader("Upload PDF or Word Essays", type=["pdf", "docx"], accept_multiple_files=True)
@@ -251,18 +240,6 @@ if app_mode == "⚙️ Admin: Train Brain":
         st.markdown("---")
         st.caption(f"📅 Last analyzed: {brain_config.get('_metadata', {}).get('analysis_date', 'Unknown')}")
         st.caption(f"📊 Chunks analyzed: {brain_config.get('_metadata', {}).get('analyzed_chunks', 'Unknown')}")
-    
-    # Reset Section
-    st.markdown("---")
-    st.subheader("🗑️ Reset Knowledge Base")
-    st.markdown("Use this if you want to clear old essays and start fresh.")
-    if st.button("🔴 Purge All Data & Reset", type="primary"):
-        if backend.reset_brain():
-            st.success("Brain wiped clean.")
-            sleep(1)
-            st.rerun()
-        else:
-            st.error("Failed to reset brain. Check permissions.")
     
     st.markdown("---")
     
