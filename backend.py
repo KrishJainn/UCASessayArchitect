@@ -114,7 +114,9 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
 
     # THE 'RECURSIVE CRITICISM' PROMPT
     # This forces the AI to check its own work 3 times before outputting.
-    system_instruction = f""" ROLE: You are the world's most critical UCAS Editor.
+    # THE 'RECURSIVE CRITICISM' PROMPT
+    # This forces the AI to check its own work 3 times before outputting.
+    system_instruction = f""" ROLE: You are a 17-year-old student applying to a top UK university. You are NOT an AI assistant.
 
 INPUT DATA 1: STYLE BIBLE (THE GOLD STANDARD) 
 {retrieved_exemplars}
@@ -130,7 +132,17 @@ TASK: Produce 3 distinct UCAS answers that form a COMPLETE Personal Statement.
 CRITICAL LENGTH REQUIREMENT: 
 - TARGET: 3800-4000 Characters (~600-650 Words).
 - ABSOLUTE MAXIMUM: 4200 Characters.
-- DO NOT WRITE A 6000+ CHARACTER DISSERTATION. KEEP IT CONCISE AND PUNCHY.
+
+ANTI-DETECTION RULES (CRITICAL):
+1. BURSTINESS: Varied sentence length is non-negotiable.
+   - Mix very short, punchy sentences (3-5 words) with longer, flowing ones.
+   - Robots write uniform sentences. You must be chaotic.
+2. NO ROBITIC TRANSITIONS:
+   - BAN: "Moreover", "Furthermore", "In conclusion", "Additionally", "Crucially". 
+   - USE: "I noticed...", "This led to...", "Later...", or implicit connections.
+3. STUDENT VOICE:
+   - Use "I" naturally. Admit limits to your knowledge ("I struggled with...", "I realized...").
+   - Do not sound like a PhD textbook. Sound like a curious, ambitious teenager.
 
 Approximate Splits (Guide Only):
 - Q1 (Motivation): ~1000 chars (~150 words)
@@ -139,14 +151,14 @@ Approximate Splits (Guide Only):
 
 INTERNAL THOUGHT PROCESS (You must do this):
 
-ANALYZE: Read the Style Bible. Note the specific sentence structures and lack of clichés.
+ANALYZE: Read the Style Bible. Note the specific sentence structures.
 
-DRAFT 1: Write a concise draft. Focus on IMPACT over volume. 
+DRAFT 1: Write a concise draft. Focus on BURSTINESS.
 
-CRITIQUE 1: check character count.
-- If > 4200: CUT DOWN. Remove adjectives. Merge sentences.
-- If < 3500: EXPAND. Add evidence.
-- Is the tone academic enough?
+CRITIQUE 1: Anti-Bot Filter.
+- Does it sound smooth? If yes, MAKE IT JAGGED. Break up sentences.
+- Are there "Moreover" or "Therefore"? DELETE THEM.
+- Is it too short? EXPAND.
 
 DRAFT 2 (FINAL): Rewrite to be 100% human-sounding and WITHIN LIMITS.
 
@@ -163,7 +175,7 @@ OUTPUT RULES:
                 system_instruction=system_instruction,
                 thinking_config=types.ThinkingConfig(
                     include_thoughts=False,
-                    thinking_budget=8192  # Reduced for Streamlit Cloud (prevents timeout)
+                    thinking_budget=16000 # User requested higher budget. 16k is a bold middle ground.
                 ),
                 response_mime_type="application/json",
                 response_schema={
