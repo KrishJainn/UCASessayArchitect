@@ -244,26 +244,46 @@ def quality_gate(essay_text):
 # 2. Force the database folder to be right here
 DB_PATH = os.path.join(BASE_DIR, 'chroma_db')
 
+# ============================================================================
+# CACHED EMBEDDING MODEL (Prevents reloading on every Streamlit interaction)
+# ============================================================================
+_cached_embedding_function = None
+_cached_vectorstore = None
+
+def get_embedding_function():
+    """Returns a cached embedding function to avoid reloading the model."""
+    global _cached_embedding_function
+    if _cached_embedding_function is None:
+        print("DEBUG: Loading embedding model (first time only)...")
+        _cached_embedding_function = HuggingFaceEmbeddings(
+            model_name="all-MiniLM-L6-v2",
+            model_kwargs={'device': 'cpu'}
+        )
+    return _cached_embedding_function
+
 # Helper to initialize the vector store with explicit persistence
 def get_vectorstore():
-    # 3. Initialize PersistentClient (Force disk storage)
+    global _cached_vectorstore
+    
+    # Return cached if available
+    if _cached_vectorstore is not None:
+        return _cached_vectorstore
+    
+    # Initialize PersistentClient (Force disk storage)
     print(f"DEBUG: Connecting to Persistent Database at: {DB_PATH}")
     client = chromadb.PersistentClient(path=DB_PATH)
     
-    # Force CPU to avoid Mac MPS meta tensor error
-    embedding_function = HuggingFaceEmbeddings(
-        model_name="all-MiniLM-L6-v2",
-        model_kwargs={'device': 'cpu'}
-    )
+    # Use cached embedding function
+    embedding_function = get_embedding_function()
     
     # LangChain wrapper around the persistent client
-    vectorstore = Chroma(
+    _cached_vectorstore = Chroma(
         client=client,
         collection_name="college_essays",
         embedding_function=embedding_function,
     )
     
-    return vectorstore
+    return _cached_vectorstore
 
 def get_essay_count():
     try:
