@@ -427,11 +427,11 @@ def analyze_all_essays():
         "Vocabulary_Bank": [
             "List 50+ specific words (e.g., 'galvanized', 'curiosity', 'realm')."
         ],
-        "Section_Tone": {
+        "Section_Tone": {{
             "Q1_tone": "Describe the tone of the opening hooks (e.g. 'Urgent', 'Reflective').",
             "Q2_tone": "Describe the tone of the academic critique sections.",
             "Q3_tone": "Describe the tone of the practical evidence sections."
-        },
+        }},
         "Sentence_Templates": [
             "Extract 10 UNIQUE sentence structures (e.g., 'The problem wasn't X; it was Y.').",
             "DO NOT extract 'I did X and learned Y'." 
