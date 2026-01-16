@@ -105,7 +105,8 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
     
     user_complaints = ["driven to", "underpinning", "instilled", "akin to", "demystify", "power of", 
                        "drawn to", "allure", "fascinated", "deeply", "profoundly", "framework", 
-                       "landscape", "tapestry", "utilize", "leverage"]
+                       "landscape", "tapestry", "utilize", "leverage", "captivated", "glimpsing", 
+                       "eager", "revealing", "precise logic"]
                        
     master_banned = list(set(BANNED_WORDS + BANNED_PHRASES + banned + user_complaints))
     
@@ -131,9 +132,10 @@ Vocabulary: {vocab_bank[:20]}
 MANDATORY VOCAB TO USE: {forced_vocab} (You MUST use these 7 words naturally).
 
 STRICT RULES FOR HUMANIZATION (SYNTAX CLONING):
-1. **ACTION OPENERS ONLY:** 
-   - Q1 MUST start with a concrete event ("I sat in the lecture hall..."). 
-   - NEVER start with "I am drawn to", "My passion", or "Economics is".
+1. **NO THESIS STATEMENTS:** 
+   - NEVER Start with "I want to study Economics because...". (Score: 100% AI).
+   - NEVER Start with "I am captivated by...".
+   - Start IN MEDIA RES (In the middle of the action).
 2. **SYNTAX CLONING:** 
    - Look at the Exemplars. If they use short sentences, you use short sentences.
    - If they use a fragment ("Strange. But true."), YOU use a fragment.
@@ -146,10 +148,10 @@ STRICT RULES FOR HUMANIZATION (SYNTAX CLONING):
    - AVOID generic adjectives ("good", "hard", "interesting"). Use precise ones.
 
 BAD ROBOTIC EXAMPLE (DO NOT WRITE LIKE THIS):
-"I am drawn to Economics... This project instilled in me a desire..." (Score: 100% AI).
+"I want to study Economics because I am captivated by the mathematical structures..." (Score: 100% AI).
 
 GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
-"I lost £50 trading generic stocks. That loss taught me more about markets than any textbook." (Score: 0% AI).
+"The 2008 crash defied every model in my textbook. That failure fascinated me more than the theory itself." (Score: 0% AI).
 
 TASK:
 Write the Personal Statement in 3 sections with STRICT TARGET RANGES (DO NOT WRITE SHORT, DO NOT OVERSHOOT):
