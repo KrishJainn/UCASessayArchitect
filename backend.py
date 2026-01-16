@@ -116,21 +116,22 @@ Vocabulary: {brain_config.get('Vocabulary_Bank', [])[:15]}
 Templates: {brain_config.get('Sentence_Templates', [])[:5]}
 
 STRICT RULES FOR HUMANIZATION (STRUCTURAL MIRRORING):
-1. MIRROR SENTENCE LENGTHS: Look at the Exemplars. If they use a 5-word sentence, you use a 5-word sentence.
-2. NO 'GLUE' WORDS: Banned words = "Moreover", "Furthermore", "In conclusion", "Additionally". Just say the next thing.
-3. START WITH VERBS/NOUNS: Do not start with "Reflecting on...", "Driven by...", "Through my experience...". Start with "I built...", "Mathematics is...", "The experiment failed...".
+1. **NO DEFINITIONS:** DO NOT Start with "Economics is..." or "Finance provides...". This is instant 100% AI.
+2. **NO ADVERBS:** Delete "deeply", "profoundly", "undoubtedly", "truly", "merely". (e.g. Instead of "I was deeply intrigued", say "I grew interested").
+3. **START WITH ACTION:** Start paragraphs with what you DID. "I built logic gates..." not "My interest in computing...".
+4. **MIRROR SYNTAX:** If the Exemplar uses a fragment ("Strange. But true."), YOU use a fragment.
 
 BAD ROBOTIC EXAMPLE (DO NOT WRITE LIKE THIS):
-"My passion for Economics stems from a deep curiosity about its multifaceted nature. This experience underscored the importance of resilience." (Score: 100% AI).
+"Economics and Finance provides the most rigorous analytical framework... I am deeply drawn to..." (Score: 100% AI).
 
 GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
-"I love Economics because it explains chaos. When I traded stocks, I lost money. That loss taught me more than any textbook." (Score: 0% AI).
+"I lost £50 trading generic stocks. That loss taught me more about markets than any textbook. I wanted to know *why* the price crashed." (Score: 0% AI).
 
 TASK:
 Write the Personal Statement in 3 sections (Motivation, Academics, Activities).
-- LENGTH: 3600-4400 Characters.
-- TONE: Intellectual, Driven, slightly 'Spiky' (not smooth).
-- BANNED: {banned}
+- **LENGTH: 3600-3950 Characters.** (STRICT. DO NOT EXCEED 4000).
+- TONE: Sharp, Intellectual, Direct.
+- BANNED: {banned} + [deeply, profoundly, framework, landscape, tapestry]
 
 OUTPUT FORMAT:
 - JSON with keys: q1_answer, q2_answer, q3_answer.
