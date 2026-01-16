@@ -21,6 +21,9 @@ if "student_story" not in st.session_state: st.session_state.student_story = ""
 if "generated_essay" not in st.session_state: st.session_state.generated_essay = ""
 if "cv_text" not in st.session_state: st.session_state.cv_text = ""
 
+# VERSION TRACER (To help user see if Cloud Updated)
+st.sidebar.info("🚀 **v4.1: Deep Brain & Anti-Lag** \n(If you see this, you have the latest code)")
+
 # --- Helper Functions for Navigation & Persistence ---
 def next_step():
     st.session_state.step += 1
@@ -407,14 +410,15 @@ elif app_mode == "🎓 UCAS Personal Statement":
                         st.error("🧠 **Brain is empty!** Please go to 'Admin: Train Brain' and upload essay PDFs first.")
                         st.stop()
                     
-                    # Get a broad sample first (up to 20 chunks for analysis)
-                    all_essays = vectorstore.similarity_search("personal statement motivation academic", k=min(essay_count, 20))
+                    # Get a broad sample first (up to 50 chunks to show "Whole Brain" analysis)
+                    all_essays = vectorstore.similarity_search("personal statement motivation academic", k=min(essay_count, 50))
                     corpus_text = "\n\n".join([doc.page_content for doc in all_essays])
                     
                     # 3. STAGE 2: Get the BEST exemplars matched to THIS student's profile
                     # Combine course + motivation for targeted retrieval
                     search_query = f"{st.session_state.target_course} {st.session_state.student_story[:500]}"
-                    best_exemplars = vectorstore.similarity_search(search_query, k=min(essay_count, 5))
+                    # INCREASED CONTEXT: Fetch 12 chunks (approx 2-3 full essays) instead of 5
+                    best_exemplars = vectorstore.similarity_search(search_query, k=min(essay_count, 12))
                     retrieved_exemplars = "\n\n---EXEMPLAR---\n\n".join([doc.page_content for doc in best_exemplars])
                     
                     # 4. Load Brain Config (Rules)
