@@ -242,11 +242,25 @@ Return JSON with keys: "analysis_log", "q1_answer", "q2_answer", "q3_answer"
         total = len(q1) + len(q2) + len(q3)
         
         if total > 4000:
-            # Proportionally truncate each section
+            # Helper function to truncate at last complete sentence
+            def truncate_at_sentence(text, max_chars):
+                if len(text) <= max_chars:
+                    return text
+                truncated = text[:max_chars]
+                # Find last sentence-ending punctuation
+                last_period = truncated.rfind('.')
+                last_exclaim = truncated.rfind('!')
+                last_question = truncated.rfind('?')
+                last_end = max(last_period, last_exclaim, last_question)
+                if last_end > max_chars * 0.5:  # Only if we keep at least half
+                    return truncated[:last_end + 1]
+                return truncated  # Fallback if no good sentence end found
+            
+            # Proportionally truncate each section at sentence boundaries
             ratio = 3950 / total  # Target 3950 to leave buffer
-            result["q1_answer"] = q1[:int(len(q1) * ratio)]
-            result["q2_answer"] = q2[:int(len(q2) * ratio)]
-            result["q3_answer"] = q3[:int(len(q3) * ratio)]
+            result["q1_answer"] = truncate_at_sentence(q1, int(len(q1) * ratio))
+            result["q2_answer"] = truncate_at_sentence(q2, int(len(q2) * ratio))
+            result["q3_answer"] = truncate_at_sentence(q3, int(len(q3) * ratio))
             print(f"TRUNCATED: {total} -> {len(result['q1_answer']) + len(result['q2_answer']) + len(result['q3_answer'])}")
         
         return result
