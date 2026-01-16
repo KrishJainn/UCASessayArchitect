@@ -129,7 +129,7 @@ GOOD HUMAN EXAMPLE (WRITE LIKE THIS):
 
 TASK:
 Write the Personal Statement in 3 sections (Motivation, Academics, Activities).
-- **LENGTH: 3600-3950 Characters.** (STRICT. DO NOT EXCEED 4000).
+- **LENGTH: 3600-4200 Characters.** (Target this range).
 - TONE: Sharp, Intellectual, Direct.
 - BANNED: {banned} + [deeply, profoundly, framework, landscape, tapestry]
 
