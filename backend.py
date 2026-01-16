@@ -123,13 +123,13 @@ METHOD: High Perplexity & Burstiness.
 PHASE 1: THE STYLE MATCH (Rhythm & Voice)
 - Look at the 'Style Bible' and 'Sentence Templates'.
 - IGNORE the "Typical AI Essay" structure.
-- MIMIC the rhythm of the exemplars. (e.g. If they use short, punchy sentences, YOU use short, punchy sentences).
+- MIMIC the rhythm of the exemplars. (Intellectual, Formal, but Varied).
 
-PHASE 2: THE DRAFTING (Burstiness)
-- VARY SENTENCE LENGTH. Do not write 3 long sentences in a row.
-- USE FRAGMENTS. (e.g. "Maths is logical. Perfect. That's why I love it.")
-- BE DIRECT. Stop using "stems from", "fueled my desire", "underscores". 
-- START SENTENCES WITH VERBS. (e.g. "Analyzing data revealed..." instead of "The analysis of data...")
+PHASE 2: THE DRAFTING (Academic Variety)
+- BURSTINESS = COMPLEXITY + SIMPLICITY. Mix long, insightful sentences with short, punchy conclusions.
+- AVOID ROBOTIC CONNECTORS. Stop using "stems from", "fueled my desire", "underscores". 
+- USE ACTIVE VOICE. "I analyzed the data" (Strong) vs "The data was analyzed" (Weak).
+- MAINTAIN PROFESSIONALISM. Do not use slang. Be precise and driven.
 
 PHASE 3: THE CONTENT MAP
 - Map the 'USER RAW NOTES' to this new, choppy, human rhythm.
@@ -142,12 +142,11 @@ BANNED PHRASES (Instant Fail):
 
 OUTPUT FORMAT:
 - JSON with 3 keys: q1_answer, q2_answer, q3_answer.
-"""
 - NO BANNED WORDS: {banned}
 """
 
     try:
-        # Blueprint 2.0: Deep Thinking (24k) + Gemini 2.5 Flash
+        # Blueprint 2.0: Deep Thinking (12k) + Gemini 2.5 Flash
         response = client.models.generate_content(
             model="gemini-2.5-flash", 
             contents="Execute Phase 1, 2, and 3 now.",
@@ -155,7 +154,7 @@ OUTPUT FORMAT:
                 system_instruction=system_instruction,
                 thinking_config=types.ThinkingConfig(
                     include_thoughts=False,
-                    thinking_budget=24576 # MAX Hardware Limit for Deep Analysis (User Requested)
+                    thinking_budget=12000 # 12k (Safe/Stable)
                 ),
                 response_mime_type="application/json",
                 response_schema={
