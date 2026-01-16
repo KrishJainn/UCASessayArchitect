@@ -79,7 +79,7 @@ BANNED_WORDS = [
 
 def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_config: dict) -> dict:
     """ 
-    Phoenix 4.0: GOD MODE. Uses 24k Thinking Tokens (Hardware Limit) + Recursive Criticism. 
+    Phoenix 4.0: ANTIGRAVITY BLUEPRINT 2.0 (Audit -> Bluepint -> Draft).
     """
     
     api_key = os.environ.get("GEMINI_API_KEY")
@@ -87,120 +87,68 @@ def generate_separated_essay(user_profile: str, retrieved_exemplars: str, brain_
     
     # DEFENSIVE: Ensure brain_config is a dict
     if not isinstance(brain_config, dict):
-        print(f"WARNING: brain_config is not a dict (got {type(brain_config)}). Using defaults.")
         brain_config = {}
     
     # DEFENSIVE: Handle Anti_Patterns schema mismatch (List vs Dict)
     anti_patterns = brain_config.get("Anti_Patterns", [])
     banned = []
-    
     if isinstance(anti_patterns, list):
-        # Using the list directly (it contains strings of things to avoid)
         banned = anti_patterns
     elif isinstance(anti_patterns, dict):
-        # Legacy/Schema support: Dict containing Banned_Words
         banned = anti_patterns.get("Banned_Words", [])
-    else:
-        banned = []
 
-    # Extract Learned Style & Structure (The "Brain")
-    style_bible = brain_config.get("Style_Bible", [])
-    vocab_bank = brain_config.get("Vocabulary_Bank", [])
-    sentence_templates = brain_config.get("Sentence_Templates", [])
-    narrative_arcs = brain_config.get("Narrative_Archetypes", [])
-    
-    style_rules = "\n".join([f"- {r}" for r in style_bible]) if isinstance(style_bible, list) else "Mimic the retrieved exemplars closely."
-    vocab_list = ", ".join(vocab_bank[:30]) # Top 30 words
-    template_list = "\n".join([f"- {t}" for t in sentence_templates[:10]]) # Top 10 templates
-    
-    structure_bp = brain_config.get("Structure_Blueprint", {})
-    q1_pct = structure_bp.get("Q1_percentage", 20)
-    q2_pct = structure_bp.get("Q2_percentage", 25)
-    q3_pct = structure_bp.get("Q3_percentage", 55)
+    # THE 'BLUEPRINT 2.0' STEP-BY-STEP PROMPT
+    system_instruction = f""" ROLE: You are the 'Antigravity' Essay Architect.
 
-    # THE 'RECURSIVE CRITICISM' PROMPT
-    # This forces the AI to check its own work 3 times before outputting.
-    system_instruction = f""" ROLE: You are a 17-year-old student applying to a top UK university. You are NOT an AI assistant.
-
-INPUT DATA 1: STYLE BIBLE (THE GOLD STANDARD) 
+INPUT 1: THE STYLE BIBLE (Source of Truth)
 {retrieved_exemplars}
 
-INPUT DATA 2: USER RAW NOTES 
+INPUT 2: USER RAW NOTES (Ingredients)
 {user_profile}
 
-INPUT DATA 3: DEEP BLUEPRINT (YOUR WRITING DNA)
-VOCABULARY BANK (USE THESE WORDS): {vocab_list}
-SENTENCE TEMPLATES (USE THESE STRUCTURES): 
-{template_list}
-NARRATIVE ARCS: {narrative_arcs}
+INPUT 3: DEEP BLUEPRINT (The Learned DNA)
+Vocabulary Bank: {brain_config.get('Vocabulary_Bank', [])[:20]}
+Sentence Templates: {brain_config.get('Sentence_Templates', [])[:5]}
+Narrative Arcs: {brain_config.get('Narrative_Archetypes', [])}
 
-LEARNED STYLE RULES (MUST FOLLOW):
-{style_rules}
+STRICT STEP-BY-STEP PROCEDURE:
 
-TASK: Produce 3 distinct UCAS answers that form a COMPLETE Personal Statement.
+PHASE 1: THE DEEP AUDIT & BLUEPRINTING (Internal Thinking)
+- Audit the 'Style Bible' and 'Deep Blueprint'.
+- Pinpoint the exact 'Tone' and 'Structure' used in successful essays.
+- Create a specific 'Writing Plan' for THIS user's story, ensuring it fits the 'Deep Blueprint'.
 
-CRITICAL LENGTH REQUIREMENT: 
-- TARGET: 3500-4400 Characters (~600-700 Words).
-- ABSOLUTE MINIMUM: 3500 Characters.
-- ABSOLUTE MAXIMUM: 4400 Characters.
+PHASE 2: THE CONTENT MAPPING (Internal Thinking)
+- Take the 'USER RAW NOTES' (Content Source).
+- Map them to the 'Writing Plan'.
+- WARNING: Do NOT carry over content/stories from the Style Bible. Only use the Structure.
 
-ANTI-DETECTION RULES (CRITICAL):
-1. NO METAPHORS: Do not say "it was a revelation" or "I saw the matrix". Say "I realized".
-2. NO FLOWERY LANGUAGE: 
-   - BAN: "delve", "tapestry", "symphony", "plethora", "myriad", "testament", "underscores", "revelation", "intricate", "profound".
-   - BAN: "It goes without saying", "In today's world".
-3. BURSTINESS: Mix varied sentence lengths.
-4. STUDENT VOICE: Be direct. "I did X. I learned Y." Not "The experience illuminated the complexities of Z."
-
-Approximate Splits (Guide Only):
-- Q1 (Motivation): ~1000 chars (~160 words)
-- Q2 (Academics): ~1500 chars (~240 words)
-- Q3 (Activities): ~1900 chars (~300 words)
-- DO NOT WRITE SHORT. AIM FOR THE UPPER LIMIT (4400).
-
-INTERNAL THOUGHT PROCESS (You must do this):
-
-ANALYZE: Read the inputs. 
-- Select 2-3 specific Vocabulary words to use naturally.
-- Select 2 Sentence Templates to structure your arguments.
-
-DRAFT 1: Write a concise draft. 
-- CONTENT SOURCE: Use ONLY the User Raw Notes (CV/Draft).
-- STYLE SOURCE: Use the Vocabulary Bank and Sentence Templates.
-- WARNING: DO NOT copy specific events or names from the Exemplars.
-
-CRITIQUE 1: Anti-Hallucination & Style Check.
-- HALLUCINATION CHECK: Did I use any story/award/grade NOT in the User Notes? DELETE IT.
-- CONTENT CHECK: Did I accidentally copy a specific event from the Style Bible/Exemplars? DELETE IT.
-- STYLE CHECK: Did I use a metaphor? DELETE IT.
-- Did I use a word from the Vocabulary Bank? If no, SWAP a generic word for a Bank word.
-- Is it too flowery? MAKE IT BORING AND DIRECT.
-
-DRAFT 2 (FINAL): Rewrite to be 100% human-sounding, within limits, and authentic to the Style Bible.
-
-OUTPUT RULES:
-1. STRICTLY FOLLOW THE CHARACTER LIMITS (Max 4400 Total).
-2. NO BANNED WORDS: {banned}
-3. OUTPUT JSON strictly. """
+PHASE 3: THE DRAFTING (Final Output)
+- Write the essay in 3 distinct sections.
+- TONE: Intellectual, humble, driven (Match Style Bible).
+- LENGTH: Choose an appropriate length between 3600 and 4400 characters based on the depth of the content. Do not force 4400 if it feels padded.
+- ANTI-AI: Avoid all robotic words. Be 'bursty' and natural.
+- NO BANNED WORDS: {banned}
+"""
 
     try:
-        # Reverting to 2.5 Flash (User Confirmed usage). 
+        # Blueprint 2.0: Deep Thinking (24k) + Gemini 2.5 Flash
         response = client.models.generate_content(
             model="gemini-2.5-flash", 
-            contents="Execute the Internal Thought Process and output the JSON.",
+            contents="Execute Phase 1, 2, and 3 now.",
             config=types.GenerateContentConfig(
                 system_instruction=system_instruction,
                 thinking_config=types.ThinkingConfig(
                     include_thoughts=False,
-                    thinking_budget=12000 # 12k Tokens (User Request)
+                    thinking_budget=24576 # MAX Hardware Limit for Deep Analysis (User Requested)
                 ),
                 response_mime_type="application/json",
                 response_schema={
                     "type": "OBJECT",
                     "properties": {
-                        "q1_answer": {"type": "STRING", "description": "Motivation (Draft 2)"},
-                        "q2_answer": {"type": "STRING", "description": "Academics (Draft 2)"},
-                        "q3_answer": {"type": "STRING", "description": "Activities (Draft 2)"}
+                        "q1_answer": {"type": "STRING", "description": "Motivation (Matches Blueprint Tone)"},
+                        "q2_answer": {"type": "STRING", "description": "Academics (Matches Blueprint Logic)"},
+                        "q3_answer": {"type": "STRING", "description": "Activities (Matches Blueprint Narrative)"}
                     },
                     "required": ["q1_answer", "q2_answer", "q3_answer"]
                 },
@@ -209,7 +157,6 @@ OUTPUT RULES:
         )
         
         result = json.loads(response.text)
-        # Handle case where Gemini returns a list instead of dict
         if isinstance(result, list):
             if len(result) > 0 and isinstance(result[0], dict):
                 result = result[0]  # Unwrap the array
@@ -217,8 +164,6 @@ OUTPUT RULES:
                 return {"error": "Unexpected list response from API"}
         return result
 
-    except json.JSONDecodeError as e:
-        return {"error": f"JSON Parse Error: {str(e)} - Raw: {response.text[:200]}"}
     except Exception as e:
         return {"error": str(e)}
 
